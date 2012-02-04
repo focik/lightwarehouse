@@ -4,52 +4,33 @@
  */
 package magazyn;
 
-import com.almworks.sqlite4java.SQLiteConnection;
-import com.almworks.sqlite4java.SQLiteException;
-import com.almworks.sqlite4java.SQLiteStatement;
-import java.io.File;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author cwpika
  */
-public class Magazyn {
-    private SQLiteConnection db;
-
-    public Magazyn()
+public class Magazyn
+{
+    public HashMap<Integer, KeyValue> getList()
     {
-        File dbfile = new File("/home/kabot/Desktop/magazyn.sqlite");
+        Statement st;
 
-        Logger.getLogger("com.almworks.sqlite4java").setLevel(Level.OFF);
-
-        db = new SQLiteConnection(dbfile);
-        try {
-            db.open(true);
-        }
-        catch (SQLiteException e) {
-            System.out.println("open: " + e);
-        }
-    }
-    
-    public HashMap<Integer, String> getList()
-    {
-        SQLiteStatement st;
-
-        HashMap<Integer, String> list = new HashMap<>();
+        HashMap<Integer, KeyValue> list = new HashMap<>();
 
         try {
-            st = db.prepare("SELECT id, name FROM store ORDER BY name");
+          st = Db.getDb().createStatement();
+          ResultSet rs = st.executeQuery("SELECT id, name FROM store ORDER BY name");
 
-            while (st.step()) {
-                list.put(st.columnInt(0), st.columnString(1));
-            }
-
-            st.dispose();
+          while (rs.next()) {
+            list.put(rs.getInt("id"), new KeyValue(rs.getInt("id"), rs.getString("name")));
+          }
         }
-        catch (SQLiteException e) {
+        catch (SQLException e) {
             System.out.println(e);
         }
 
@@ -58,40 +39,41 @@ public class Magazyn {
 
     public ArrayList<Product> getProductList(int magId, String filter)
     {
-        SQLiteStatement st;
+        PreparedStatement st;
         ArrayList<Product> list = new ArrayList<>();
         Product p;
         String sql;
 
-        sql = "SELECT p.id, p.name, p.um, p.vat, o.price, o.add_date, p.quantity "
+        sql = "SELECT p.id, p.name, p.um, p.vat, p.price, p.mod_date, p.quantity "
                     + "FROM product p "
-                    + "LEFT JOIN operation o ON p.id=o.id_product AND o.last=1 "
                     + "WHERE p.id_store = ? AND p.name LIKE ?";
 
         try {
-            st = db.prepare(sql);
+          st = Db.getDb().prepareStatement(sql);
 
-            st.bind(1, magId);
-            st.bind(2, "%" + filter + "%");
-            while (st.step()) {
-                p = new Product();
+          st.setInt(1, magId);
+          st.setString(2, "%" + filter + "%");
+          
+          ResultSet rs = st.executeQuery();
+          
+          while (rs.next()) {
+            p = new Product();
 
-                p.id = st.columnInt(0);
-                p.name = st.columnString(1);
-                p.um = st.columnString(2);
-                p.vat = st.columnInt(3);
-                p.price = st.columnLong(4);
-                p.date = st.columnString(5);
-                
-                list.add(p);
-            }
+            p.id = rs.getInt("id");
+            p.name = rs.getString("name");
+            p.um = rs.getString("um");
+            p.vat = rs.getInt("vat");
+            p.price = rs.getFloat("price");
+            p.date = rs.getString("mod_date");
+            p.quantity = rs.getFloat("quantity");
 
-            st.dispose();
+            list.add(p);
+          }
         }
-        catch (SQLiteException e) {
+        catch (SQLException e) {
             System.out.println(e);
         }
-        
+
         return list;
     }
 }

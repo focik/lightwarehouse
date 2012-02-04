@@ -5,6 +5,7 @@
 package magazyn;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import javax.swing.table.DefaultTableModel;
 
@@ -15,49 +16,57 @@ import javax.swing.table.DefaultTableModel;
 public class MagazynFrame extends javax.swing.JFrame {
     
     private Magazyn mag;
-    DefaultTableModel model;
+    private DefaultTableModel model;
+    private HashMap<Integer, Integer> listaPosId = new HashMap<>();
 
     /**
      * Creates new form MagazynFrame
      */
     public MagazynFrame() {
         initComponents();
+        
+        filter.requestFocus();
 
         mag = new Magazyn();
         
         model = (DefaultTableModel)jTable1.getModel();
         
-        setMenu(mag.getList());
+        setMagList(mag.getList());
     }
 
-    private void setMenu(Map<Integer, String> list)
+    private void setMagList(Map<Integer, KeyValue> list)
     {
-        for (Map.Entry<Integer, String> m : list.entrySet()) {
-            magCombo.addItem(new KeyValue(m.getKey(), m.getValue()));
+        for (Map.Entry<Integer, KeyValue> m : list.entrySet()) {
+            magCombo.addItem(m.getValue());
         }
     }
 
     public void setProductTable()
     {
-        int pos = 1;
+        int pos = 0;
         ArrayList<Product> list = mag.getProductList(
                 ((KeyValue)magCombo.getSelectedItem()).key,
                 filter.getText());
+        
+        listaPosId.clear();
 
         model.getDataVector().removeAllElements();
         model.fireTableDataChanged();
 
         for (Product p : list) {
+            pos++;
+            
             model.addRow(new Object[]{
-                pos++,
+                pos,
                 p.name,
                 p.um,
                 p.vat,
                 p.quantity,
                 p.price,
-                p.date,
-                p.id
+                p.date
             });
+            
+            listaPosId.put(pos, p.id);
         }
     }
 
@@ -129,17 +138,17 @@ public class MagazynFrame extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Lp", "Nazwa", "Jm", "Vat", "Ilość", "Cena", "Data", "Id"
+                "Lp", "Nazwa", "Jm", "Vat", "Ilość", "Cena", "Data"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Float.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Float.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -157,9 +166,18 @@ public class MagazynFrame extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(jTable1);
-        jTable1.getColumnModel().getColumn(7).setMinWidth(0);
-        jTable1.getColumnModel().getColumn(7).setPreferredWidth(0);
-        jTable1.getColumnModel().getColumn(7).setMaxWidth(0);
+        jTable1.getColumnModel().getColumn(0).setMinWidth(20);
+        jTable1.getColumnModel().getColumn(0).setMaxWidth(50);
+        jTable1.getColumnModel().getColumn(2).setMinWidth(20);
+        jTable1.getColumnModel().getColumn(2).setMaxWidth(70);
+        jTable1.getColumnModel().getColumn(3).setMinWidth(20);
+        jTable1.getColumnModel().getColumn(3).setMaxWidth(70);
+        jTable1.getColumnModel().getColumn(4).setMinWidth(20);
+        jTable1.getColumnModel().getColumn(4).setMaxWidth(70);
+        jTable1.getColumnModel().getColumn(5).setMinWidth(20);
+        jTable1.getColumnModel().getColumn(5).setMaxWidth(70);
+        jTable1.getColumnModel().getColumn(6).setMinWidth(80);
+        jTable1.getColumnModel().getColumn(6).setMaxWidth(120);
 
         jSplitPane1.setRightComponent(jScrollPane1);
 
@@ -210,11 +228,13 @@ public class MagazynFrame extends javax.swing.JFrame {
 
     private void listaClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaClicked
         int row = jTable1.getSelectedRow();
-        int id = (int) model.getValueAt(row, 7);
-
-        System.out.println(id);
+        int id = listaPosId.get(row+1);
 
         new ProductDialog(this, id).setVisible(true);
+        
+        setProductTable();
+        filter.requestFocus();
+        filter.selectAll();
     }//GEN-LAST:event_listaClicked
 
     /**

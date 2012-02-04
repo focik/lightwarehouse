@@ -4,28 +4,97 @@
  */
 package magazyn;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.JComponent;
+import javax.swing.JRootPane;
+import javax.swing.KeyStroke;
 
 /**
  *
  * @author kabot
  */
-public class ProductDialog extends javax.swing.JDialog {
+public class ProductDialog extends javax.swing.JDialog
+{
+  Product prod;
+  private Magazyn mag;
 
-    /**
-     * Creates new form ProductDialog
-     */
-    public ProductDialog(java.awt.Frame parent, int prodId) {
-        super(parent, true);
-        initComponents();
+  /**
+    * Creates new form ProductDialog
+    */
+  public ProductDialog(java.awt.Frame parent, int prodId)
+  {
+    super(parent, true);
 
-        prodName.setText("nazwa" + prodId);
+    initComponents();
+    
+    prodIlosc.requestFocus();
+    
+    setValues(prodId);
+    
+    getRootPane();
+  }
+  
+  private void setValues(int prodId)
+  {
+    HashMap<Integer, KeyValue> magList;
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        prodData.setText(dateFormat.format(new Date()));
+    mag = new Magazyn();
+    magList = mag.getList();
+
+    for (Map.Entry<Integer, KeyValue> m : magList.entrySet()) {
+      magCombo.addItem(m.getValue());
     }
+
+    prod = new Product(prodId);
+
+    prodName.setText(prod.name);
+    prodJm.setText(prod.um);
+    prodVat.setText(Integer.toString(prod.vat));
+    prodCena.setText(Float.toString(prod.price));
+    obecnaIlosc.setText(Float.toString(prod.quantity));
+
+    magCombo.setSelectedItem(magList.get(prod.magId));
+
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    prodData.setText(dateFormat.format(new Date()));
+    
+  }
+
+  @Override
+  protected JRootPane createRootPane()
+  {
+    //http://www.javaworld.com/javaworld/javatips/jw-javatip72.html
+
+    ActionListener actionListener = new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent actionEvent) {
+        saveProduct();
+      }
+    };
+
+    KeyStroke stroke = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+    JRootPane rootP = new JRootPane();
+    rootP.registerKeyboardAction(actionListener, stroke, JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+    return rootP;
+  }
+  
+  private void saveProduct()
+  {
+    System.out.println("zapisz");
+    
+    prod.quantity += Float.valueOf(prodIlosc.getText());
+    prod.price = Float.valueOf(prodCena.getText());
+
+    prod.save();
+  }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -55,6 +124,8 @@ public class ProductDialog extends javax.swing.JDialog {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        obecnaIlosc = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -71,8 +142,6 @@ public class ProductDialog extends javax.swing.JDialog {
         jLabel6.setText("Cena");
 
         jLabel7.setText("Data");
-
-        magCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         prodData.setText("2012-01-30");
 
@@ -100,6 +169,10 @@ public class ProductDialog extends javax.swing.JDialog {
 
         jButton4.setText("Usuń");
 
+        jLabel8.setText("+");
+
+        obecnaIlosc.setText("0");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -123,12 +196,17 @@ public class ProductDialog extends javax.swing.JDialog {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(magCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(prodCena, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE)
-                                        .addComponent(prodIlosc, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(prodVat, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(prodJm, javax.swing.GroupLayout.Alignment.LEADING))
-                                    .addComponent(prodData, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(prodData, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(prodCena, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE)
+                                            .addComponent(prodIlosc, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(prodVat, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(prodJm, javax.swing.GroupLayout.Alignment.LEADING))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel8)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(obecnaIlosc)))
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1)
@@ -163,7 +241,9 @@ public class ProductDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(prodIlosc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel8)
+                    .addComponent(obecnaIlosc))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -187,7 +267,7 @@ public class ProductDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnZapisz(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnZapisz
-        System.out.println("zapisz");
+        saveProduct();
     }//GEN-LAST:event_btnZapisz
 
     private void btnZapiszNowy(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnZapiszNowy
@@ -210,8 +290,10 @@ public class ProductDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JComboBox magCombo;
+    private javax.swing.JLabel obecnaIlosc;
     private javax.swing.JTextField prodCena;
     private javax.swing.JTextField prodData;
     private javax.swing.JTextField prodIlosc;
