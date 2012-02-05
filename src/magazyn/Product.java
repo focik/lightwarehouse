@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 
 /**
  * @author cwpika
@@ -58,6 +59,7 @@ public class Product
 
   public boolean save()
   {
+    DecimalFormat df = new DecimalFormat("#.##");
     String sql;
     PreparedStatement st;
     Connection db = Db.getDb();
@@ -79,7 +81,7 @@ public class Product
         st.setString(2, um);
         st.setInt(3, vat);
         st.setFloat(4, quantity);
-        st.setFloat(5, price);
+        st.setString(5, df.format(price));
         st.setString(6, date);
         st.setInt(7, magId);
         st.setInt(8, id);

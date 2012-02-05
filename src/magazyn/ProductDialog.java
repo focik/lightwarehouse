@@ -4,6 +4,7 @@
  */
 package magazyn;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -15,6 +16,7 @@ import java.util.Map;
 import javax.swing.JComponent;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
+import javax.swing.UIManager;
 
 /**
  *
@@ -33,14 +35,14 @@ public class ProductDialog extends javax.swing.JDialog
     super(parent, true);
 
     initComponents();
-    
+
     prodIlosc.requestFocus();
-    
+
     setValues(prodId);
-    
+
     getRootPane();
   }
-  
+
   private void setValues(int prodId)
   {
     HashMap<Integer, KeyValue> magList;
@@ -64,7 +66,7 @@ public class ProductDialog extends javax.swing.JDialog
 
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     prodData.setText(dateFormat.format(new Date()));
-    
+
   }
 
   @Override
@@ -72,28 +74,103 @@ public class ProductDialog extends javax.swing.JDialog
   {
     //http://www.javaworld.com/javaworld/javatips/jw-javatip72.html
 
-    ActionListener actionListener = new ActionListener() {
+    ActionListener actionEnter = new ActionListener() {
       @Override
-      public void actionPerformed(ActionEvent actionEvent) {
+      public void actionPerformed(ActionEvent evt) {
         saveProduct();
       }
     };
 
-    KeyStroke stroke = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+    ActionListener actionEsc = new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent evt) {
+        dispose();
+      }
+    };
+
     JRootPane rootP = new JRootPane();
-    rootP.registerKeyboardAction(actionListener, stroke, JComponent.WHEN_IN_FOCUSED_WINDOW);
+    rootP.registerKeyboardAction(actionEnter,
+                                 KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
+                                 JComponent.WHEN_IN_FOCUSED_WINDOW);
+    rootP.registerKeyboardAction(actionEsc,
+                                 KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+                                 JComponent.WHEN_IN_FOCUSED_WINDOW);
 
     return rootP;
   }
-  
+
   private void saveProduct()
   {
-    System.out.println("zapisz");
+    boolean ok = true;
+
+    // http://www.devdaily.com/java/java-uimanager-color-keys-list
+    final Color bg = UIManager.getColor("TextField.background");
+
+    prodName.setToolTipText(null);
+    prodName.setBackground(bg);
+    prodData.setToolTipText(null);
+    prodData.setBackground(bg);
+    prodIlosc.setToolTipText(null);
+    prodIlosc.setBackground(bg);
+    prodCena.setToolTipText(null);
+    prodCena.setBackground(bg);
+    prodVat.setToolTipText(null);
+    prodVat.setBackground(bg);
+
+    if (prodName.getText().isEmpty()) {
+      prodName.setToolTipText("Nie podano nazwa produktu");
+      prodName.setBackground(Color.red);
+      ok = false;
+    }
+
+    if (!prodData.getText().matches("^[0-9]{4}-[0-9]{2}-[0-9]{2}$")) {
+      prodData.setToolTipText("Poprawny format daty: 9999-99-99");
+      prodData.setBackground(Color.red);
+      ok = false;
+    }
     
-    prod.quantity += Float.valueOf(prodIlosc.getText());
-    prod.price = Float.valueOf(prodCena.getText());
+
+    if (!prodIlosc.getText().isEmpty()) {
+      try {
+        prod.quantity += Float.valueOf(prodIlosc.getText());
+      }
+      catch (NumberFormatException e) {
+        prodIlosc.setToolTipText("Poprawny format ilości: 9.99");
+        prodIlosc.setBackground(Color.red);
+        ok = false;
+      }
+    }
+
+    try {
+      prod.price = Float.valueOf(prodCena.getText());
+    }
+    catch (NumberFormatException e) {
+      prodCena.setToolTipText("Poprawny format ceny: 9.99");
+      prodCena.setBackground(Color.red);
+      ok = false;
+    }
+
+    try {
+      prod.vat = Integer.valueOf(prodVat.getText());
+    }
+    catch (NumberFormatException e) {
+      prodVat.setToolTipText("Poprawny format stawki vat: 99");
+      prodVat.setBackground(Color.red);
+      ok = false;
+    }
+
+    if (!ok) {
+      return;
+    }
+    
+    prod.um = prodJm.getText();
+    prod.name = prodName.getText();
+    prod.magId = ((KeyValue)magCombo.getSelectedItem()).key;
+    prod.date = prodData.getText();
 
     prod.save();
+
+    dispose();
   }
 
     /**
@@ -142,6 +219,8 @@ public class ProductDialog extends javax.swing.JDialog
         jLabel6.setText("Cena");
 
         jLabel7.setText("Data");
+
+        prodName.setToolTipText("");
 
         prodData.setText("2012-01-30");
 

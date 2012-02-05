@@ -25,7 +25,7 @@ public class Db
       catch (ClassNotFoundException ex) {
         System.out.println(ex);
       }
-      System.out.println(Config.get("dbfile"));
+
       try {
         db = DriverManager.getConnection("jdbc:sqlite:" + Config.get("dbfile"));
       }

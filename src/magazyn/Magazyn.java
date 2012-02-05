@@ -46,7 +46,7 @@ public class Magazyn
 
         sql = "SELECT p.id, p.name, p.um, p.vat, p.price, p.mod_date, p.quantity "
                     + "FROM product p "
-                    + "WHERE p.id_store = ? AND p.name LIKE ?";
+                    + "WHERE p.id_store = ? AND p.name LIKE ? ORDER BY name";
 
         try {
           st = Db.getDb().prepareStatement(sql);
