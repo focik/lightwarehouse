@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Okno z definicja produktu
  */
 package magazyn;
 
@@ -9,14 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.JComponent;
-import javax.swing.JRootPane;
-import javax.swing.KeyStroke;
-import javax.swing.UIManager;
+import javax.swing.*;
 
 /**
  *
@@ -36,6 +33,11 @@ public class ProductDialog extends javax.swing.JDialog
 
     initComponents();
 
+    if (prodId == 0) {
+      buttonUsun.setEnabled(false);
+      buttonZapiszNowy.setEnabled(false);
+    }
+
     prodIlosc.requestFocus();
 
     setValues(prodId);
@@ -46,6 +48,8 @@ public class ProductDialog extends javax.swing.JDialog
   private void setValues(int prodId)
   {
     HashMap<Integer, KeyValue> magList;
+    DecimalFormat df0 = new DecimalFormat("0.00");
+    DecimalFormat df = new DecimalFormat("#.##");
 
     mag = new Magazyn();
     magList = mag.getList();
@@ -59,8 +63,8 @@ public class ProductDialog extends javax.swing.JDialog
     prodName.setText(prod.name);
     prodJm.setText(prod.um);
     prodVat.setText(Integer.toString(prod.vat));
-    prodCena.setText(Float.toString(prod.price));
-    obecnaIlosc.setText(Float.toString(prod.quantity));
+    prodCena.setText(df0.format(prod.price));
+    obecnaIlosc.setText(df.format(prod.quantity));
 
     magCombo.setSelectedItem(magList.get(prod.magId));
 
@@ -106,6 +110,8 @@ public class ProductDialog extends javax.swing.JDialog
     // http://www.devdaily.com/java/java-uimanager-color-keys-list
     final Color bg = UIManager.getColor("TextField.background");
 
+    magCombo.setToolTipText(null);
+    magCombo.setBackground(bg);
     prodName.setToolTipText(null);
     prodName.setBackground(bg);
     prodData.setToolTipText(null);
@@ -116,6 +122,12 @@ public class ProductDialog extends javax.swing.JDialog
     prodCena.setBackground(bg);
     prodVat.setToolTipText(null);
     prodVat.setBackground(bg);
+
+    if (magCombo.getSelectedItem() == null) {
+      magCombo.setToolTipText("Produkt powinien zostać przypisany do magazynu");
+      magCombo.setBackground(Color.red);
+      ok = false;
+    }
 
     if (prodName.getText().isEmpty()) {
       prodName.setToolTipText("Nie podano nazwa produktu");
@@ -128,7 +140,7 @@ public class ProductDialog extends javax.swing.JDialog
       prodData.setBackground(Color.red);
       ok = false;
     }
-    
+
 
     if (!prodIlosc.getText().isEmpty()) {
       try {
@@ -162,7 +174,7 @@ public class ProductDialog extends javax.swing.JDialog
     if (!ok) {
       return;
     }
-    
+
     prod.um = prodJm.getText();
     prod.name = prodName.getText();
     prod.magId = ((KeyValue)magCombo.getSelectedItem()).key;
@@ -171,6 +183,11 @@ public class ProductDialog extends javax.swing.JDialog
     prod.save();
 
     dispose();
+  }
+
+  private void delProduct()
+  {
+    prod.delete();
   }
 
     /**
@@ -198,9 +215,9 @@ public class ProductDialog extends javax.swing.JDialog
         prodData = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        buttonZapiszNowy = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        buttonUsun = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         obecnaIlosc = new javax.swing.JLabel();
 
@@ -232,8 +249,8 @@ public class ProductDialog extends javax.swing.JDialog
             }
         });
 
-        jButton2.setText("Zapisz jako nowy");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        buttonZapiszNowy.setText("Zapisz jako nowy");
+        buttonZapiszNowy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnZapiszNowy(evt);
             }
@@ -246,7 +263,12 @@ public class ProductDialog extends javax.swing.JDialog
             }
         });
 
-        jButton4.setText("Usuń");
+        buttonUsun.setText("Usuń");
+        buttonUsun.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUsun(evt);
+            }
+        });
 
         jLabel8.setText("+");
 
@@ -290,11 +312,11 @@ public class ProductDialog extends javax.swing.JDialog
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)
+                        .addComponent(buttonZapiszNowy)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4)
+                        .addComponent(buttonUsun)
                         .addGap(0, 61, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -336,9 +358,9 @@ public class ProductDialog extends javax.swing.JDialog
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jButton2)
+                    .addComponent(buttonZapiszNowy)
                     .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(buttonUsun))
                 .addContainerGap())
         );
 
@@ -346,22 +368,36 @@ public class ProductDialog extends javax.swing.JDialog
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnZapisz(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnZapisz
-        saveProduct();
+      saveProduct();
     }//GEN-LAST:event_btnZapisz
 
     private void btnZapiszNowy(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnZapiszNowy
-        System.out.println("zapisznowy");
+      prod.id = 0;
+      saveProduct();
     }//GEN-LAST:event_btnZapiszNowy
 
     private void btnAnuluj(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnuluj
-        dispose();
+      dispose();
     }//GEN-LAST:event_btnAnuluj
 
+  private void btnUsun(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnUsun
+  {//GEN-HEADEREND:event_btnUsun
+    int opt;
+    opt = JOptionPane.showConfirmDialog(null,
+                                        "Czy na pewno usunąć produkt \"" + prod.name + "\"?",
+                                        "Usuwanie produktu",
+                                        JOptionPane.YES_NO_OPTION);
+    if (opt == JOptionPane.YES_OPTION) {
+      delProduct();
+      dispose();
+    }
+  }//GEN-LAST:event_btnUsun
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonUsun;
+    private javax.swing.JButton buttonZapiszNowy;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

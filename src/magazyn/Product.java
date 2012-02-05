@@ -9,6 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author cwpika
@@ -41,13 +43,15 @@ public class Product
       st.setInt(1, prodId);
       ResultSet rs = st.executeQuery();
 
-      name = rs.getString("name");
-      um = rs.getString("um");
-      vat = rs.getInt("vat");
-      price = rs.getFloat("price");
-      date = rs.getString("mod_date");
-      quantity = rs.getFloat("quantity");
-      magId = rs.getInt("id_store");
+      if (rs.next()) {
+        name = rs.getString("name");
+        um = rs.getString("um");
+        vat = rs.getInt("vat");
+        price = rs.getFloat("price");
+        date = rs.getString("mod_date");
+        quantity = rs.getFloat("quantity");
+        magId = rs.getInt("id_store");
+      }
     }
     catch (SQLException e) {
       System.out.println(e);
@@ -68,40 +72,61 @@ public class Product
       sql = "UPDATE product SET " +
             "name = ?, " +
             "um = ?, " +
-            "vat = ?, " + 
+            "vat = ?, " +
             "quantity = ?, " +
             "price = ?, " +
             "mod_date = ?, " +
             "id_store = ? " +
             "WHERE id = ?";
 
-      try {
-        st = db.prepareStatement(sql);
-        st.setString(1, name);
-        st.setString(2, um);
-        st.setInt(3, vat);
-        st.setFloat(4, quantity);
-        st.setString(5, df.format(price));
-        st.setString(6, date);
-        st.setInt(7, magId);
-        st.setInt(8, id);
-//System.out.println(quantity);
-
-        st.executeUpdate();
-
-        //bez tego dane nie trafiaja do pliku
-        Db.close();
-      }
-      catch (SQLException e) {
-        System.out.println(e);
-      }
-
-      System.out.println("aktualizacja "+ id);
+      //System.out.println("aktualizacja "+ id);
     }
     else {
-      System.out.println("nowy produkt");
+      sql = "INSERT INTO product " +
+            "(name, um, vat, quantity, price, mod_date, id_store) VALUES " +
+            "(?, ?, ?, ?, ?, ?, ?)";
+
+      //System.out.println("nowy produkt");
     }
-    
+
+    try {
+      st = db.prepareStatement(sql);
+      st.setString(1, name);
+      st.setString(2, um);
+      st.setInt(3, vat);
+      st.setFloat(4, quantity);
+      st.setString(5, df.format(price));
+      st.setString(6, date);
+      st.setInt(7, magId);
+      if (id > 0) {
+        st.setInt(8, id);
+      }
+
+      st.executeUpdate();
+
+      //bez tego dane nie trafiaja do pliku
+      Db.close();
+    }
+    catch (SQLException e) {
+      System.out.println(e);
+    }
+
     return true;
+  }
+
+  public void delete()
+  {
+    PreparedStatement st;
+
+    try {
+      st = Db.getDb().prepareStatement("DELETE FROM product WHERE id = ?");
+      st.setInt(1, id);
+
+      st.executeUpdate();
+      Db.close();
+    }
+    catch (SQLException e) {
+      System.out.println(e);
+    }
   }
 }

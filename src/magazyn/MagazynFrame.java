@@ -4,9 +4,13 @@
  */
 package magazyn;
 
+import java.awt.Component;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.JLabel;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -14,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
  * @author kabot
  */
 public class MagazynFrame extends javax.swing.JFrame {
-    
+
     private Magazyn mag;
     private DefaultTableModel model;
     private HashMap<Integer, Integer> listaPosId = new HashMap<>();
@@ -22,16 +26,22 @@ public class MagazynFrame extends javax.swing.JFrame {
     /**
      * Creates new form MagazynFrame
      */
-    public MagazynFrame() {
-        initComponents();
-        
-        filter.requestFocus();
+    public MagazynFrame()
+    {
+      initComponents();
 
-        mag = new Magazyn();
-        
-        model = (DefaultTableModel)jTable1.getModel();
-        
-        setMagList(mag.getList());
+      DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+      rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
+      jTable1.getColumnModel().getColumn(5).setCellRenderer(rightRenderer);
+
+
+      filter.requestFocus();
+
+      mag = new Magazyn();
+
+      model = (DefaultTableModel)jTable1.getModel();
+
+      setMagList(mag.getList());
     }
 
     private void setMagList(Map<Integer, KeyValue> list)
@@ -43,31 +53,32 @@ public class MagazynFrame extends javax.swing.JFrame {
 
     public void setProductTable()
     {
-        int pos = 0;
-        ArrayList<Product> list = mag.getProductList(
-                ((KeyValue)magCombo.getSelectedItem()).key,
-                filter.getText());
-        
-        listaPosId.clear();
+      DecimalFormat df0 = new DecimalFormat("0.00");
+      int pos = 0;
+      ArrayList<Product> list = mag.getProductList(
+              ((KeyValue)magCombo.getSelectedItem()).key,
+              filter.getText());
 
-        model.getDataVector().removeAllElements();
-        model.fireTableDataChanged();
+      listaPosId.clear();
 
-        for (Product p : list) {
-            pos++;
-            
-            model.addRow(new Object[]{
-                pos,
-                p.name,
-                p.um,
-                p.vat,
-                p.quantity,
-                p.price,
-                p.date
-            });
-            
-            listaPosId.put(pos, p.id);
-        }
+      model.getDataVector().removeAllElements();
+      model.fireTableDataChanged();
+
+      for (Product p : list) {
+        pos++;
+
+        model.addRow(new Object[]{
+          pos,
+          p.name,
+          p.um,
+          p.vat,
+          p.quantity,
+          df0.format(p.price),
+          p.date
+        });
+
+        listaPosId.put(pos, p.id);
+      }
     }
 
     /**
@@ -88,6 +99,8 @@ public class MagazynFrame extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -122,7 +135,7 @@ public class MagazynFrame extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(magCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(filter, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
+                .addComponent(filter, javax.swing.GroupLayout.DEFAULT_SIZE, 758, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -145,7 +158,7 @@ public class MagazynFrame extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Float.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false, false
@@ -160,6 +173,7 @@ public class MagazynFrame extends javax.swing.JFrame {
             }
         });
         jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTable1.getTableHeader().setReorderingAllowed(false);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 listaClicked(evt);
@@ -183,6 +197,15 @@ public class MagazynFrame extends javax.swing.JFrame {
 
         jMenu1.setText("Magazyn");
 
+        jMenuItem2.setText("Dodaj nowy produkt");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuNowyProdukt(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
+        jMenu1.add(jSeparator1);
+
         jMenuItem1.setText("Wyjście");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -199,11 +222,11 @@ public class MagazynFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 959, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
         );
 
         pack();
@@ -227,15 +250,24 @@ public class MagazynFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_szukajAction
 
     private void listaClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaClicked
-        int row = jTable1.getSelectedRow();
-        int id = listaPosId.get(row+1);
+      int row = jTable1.getSelectedRow();
+      int id = listaPosId.get(row+1);
 
-        new ProductDialog(this, id).setVisible(true);
-        
-        setProductTable();
-        filter.requestFocus();
-        filter.selectAll();
+      new ProductDialog(this, id).setVisible(true);
+
+      setProductTable();
+      filter.requestFocus();
+      filter.selectAll();
     }//GEN-LAST:event_listaClicked
+
+  private void menuNowyProdukt(java.awt.event.ActionEvent evt)//GEN-FIRST:event_menuNowyProdukt
+  {//GEN-HEADEREND:event_menuNowyProdukt
+    new ProductDialog(this, 0).setVisible(true);
+
+    setProductTable();
+    filter.requestFocus();
+    filter.selectAll();
+  }//GEN-LAST:event_menuNowyProdukt
 
     /**
      * @param args the command line arguments
@@ -258,8 +290,10 @@ public class MagazynFrame extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JComboBox magCombo;
