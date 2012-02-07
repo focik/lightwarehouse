@@ -144,7 +144,7 @@ public class ProductDialog extends javax.swing.JDialog
 
     if (!prodIlosc.getText().isEmpty()) {
       try {
-        prod.quantity += Float.valueOf(prodIlosc.getText());
+        prod.quantity += Float.valueOf(prodIlosc.getText().replace(",", "."));
       }
       catch (NumberFormatException e) {
         prodIlosc.setToolTipText("Poprawny format ilości: 9.99");
@@ -154,7 +154,7 @@ public class ProductDialog extends javax.swing.JDialog
     }
 
     try {
-      prod.price = Float.valueOf(prodCena.getText());
+      prod.price = Float.valueOf(prodCena.getText().replace(",", "."));
     }
     catch (NumberFormatException e) {
       prodCena.setToolTipText("Poprawny format ceny: 9.99");

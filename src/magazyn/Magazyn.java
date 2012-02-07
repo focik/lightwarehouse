@@ -53,9 +53,9 @@ public class Magazyn
 
           st.setInt(1, magId);
           st.setString(2, "%" + filter + "%");
-          
+
           ResultSet rs = st.executeQuery();
-          
+
           while (rs.next()) {
             p = new Product();
 
