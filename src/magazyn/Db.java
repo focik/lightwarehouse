@@ -7,6 +7,7 @@ package magazyn;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import kbt.Config;
 
 /**
  *
@@ -49,5 +50,5 @@ public class Db
       db = null;
     }
   }
- 
+
 }

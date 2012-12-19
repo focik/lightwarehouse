@@ -1,10 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package magazyn;
 
-import java.awt.Component;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -101,6 +96,7 @@ public class MagazynFrame extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -206,6 +202,14 @@ public class MagazynFrame extends javax.swing.JFrame {
         jMenu1.add(jMenuItem2);
         jMenu1.add(jSeparator1);
 
+        jMenuItem3.setText("Aktualizacja");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actionAktualizacja(evt);
+            }
+        });
+        jMenu1.add(jMenuItem3);
+
         jMenuItem1.setText("Wyjście");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -222,7 +226,7 @@ public class MagazynFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 959, Short.MAX_VALUE)
+            .addComponent(jSplitPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -269,21 +273,26 @@ public class MagazynFrame extends javax.swing.JFrame {
     filter.selectAll();
   }//GEN-LAST:event_menuNowyProdukt
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /*
-         * Create and display the form
-         */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+  private void actionAktualizacja(java.awt.event.ActionEvent evt)//GEN-FIRST:event_actionAktualizacja
+  {//GEN-HEADEREND:event_actionAktualizacja
+    new UpgradeDialog(this, true).setVisible(true);
+  }//GEN-LAST:event_actionAktualizacja
 
-            @Override
-            public void run() {
-                new MagazynFrame().setVisible(true);
-            }
-        });
-    }
+  /**
+   * @param args the command line arguments
+   */
+  public static void main(String[] args)
+  {
+    // program moze byc wywolywany przez magazynstart
+    java.awt.EventQueue.invokeLater(new Runnable() {
+
+      @Override
+      public void run() {
+        new MagazynFrame().setVisible(true);
+      }
+    });
+  }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField filter;
     private javax.swing.JButton jButton1;
@@ -291,6 +300,7 @@ public class MagazynFrame extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
