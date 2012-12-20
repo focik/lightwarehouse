@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package magazyn;
+package lwh;
 
 import kbt.Config;
 
@@ -35,7 +35,6 @@ public class UpgradeDialog extends javax.swing.JDialog
     upgradeVersion.setText(Integer.toString(upgVer));
 
     if (upgVer > curVer) {
-      //upgrade jest potrzebny
       upgNeededInfo.setText("Aktulizacja jest dostępna.");
     }
     else {

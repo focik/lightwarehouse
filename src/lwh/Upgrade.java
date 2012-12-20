@@ -1,13 +1,14 @@
-package magazyn;
+package lwh;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -47,13 +48,18 @@ public class Upgrade
 
   public boolean download()
   {
-    try {
-      InputStream in = fileUrl.openStream();
+    File tmpfile;
+    InputStream in;
 
-      //TODO kopiowac do /tmp
-      Files.copy(in, Paths.get("/home/kabot/Desktop/down.zip"));
+    try {
+      in = fileUrl.openStream();
+      tmpfile = File.createTempFile("lwh-", "");
+
+      Files.copy(in, tmpfile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
     }
     catch (IOException ex) {
+      System.out.println(ex);
       return false;
     }
 
@@ -73,11 +79,11 @@ public class Upgrade
         System.out.println("jest");
       }
       catch (InterruptedException ex) {
-        Logger.getLogger(MagazynFrame.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
       }
     }
     catch (IOException ex) {
-      Logger.getLogger(MagazynFrame.class.getName()).log(Level.SEVERE, null, ex);
+      Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
     }
 
   }

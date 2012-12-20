@@ -16,7 +16,12 @@ import java.util.Properties;
 public class Config
 {
   private static Properties props = null;
-  private static String appPath;
+  private static String workDir;
+
+  public static void setWorkDir(String dir)
+  {
+    workDir = dir;
+  }
 
   public static String get(String key)
   {
@@ -40,15 +45,7 @@ public class Config
     FileInputStream fcommon;
     String confPath;
 
-    //polozenie pliku .jar
-    String jarPath = Config.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-
-    appPath = new File(jarPath).getParent();
-    confPath = appPath + "/" + filename;
-
-    if (!(new File(confPath)).exists()) {
-      confPath = System.getProperty("user.home") + "/projekty/magazyn/" + filename;
-    }
+    confPath = workDir + "/" + filename;
 
     try {
       fcommon = new FileInputStream(confPath);
@@ -64,7 +61,7 @@ public class Config
 
   private static String putVars(String val)
   {
-    val = val.replace("{appPath}", appPath);
+    val = val.replace("{workDir}", workDir);
 
     return val;
   }
