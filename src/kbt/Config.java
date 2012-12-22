@@ -4,7 +4,6 @@
  */
 package kbt;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -18,14 +17,18 @@ public class Config
   private static Properties props = null;
   private static String workDir;
 
-  public static void setWorkDir(String dir)
+  public static String getWorkDir()
   {
-    workDir = dir;
+    return workDir;
+  }
+
+  public static void setWorkDir(String workDir)
+  {
+    Config.workDir = workDir;
   }
 
   public static String get(String key)
   {
-//    FileOutputStream propsfile;
     String value;
 
     if (props == null) {

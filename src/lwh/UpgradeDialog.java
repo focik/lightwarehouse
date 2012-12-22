@@ -34,6 +34,8 @@ public class UpgradeDialog extends javax.swing.JDialog
     currentVersion.setText(Config.get("version"));
     upgradeVersion.setText(Integer.toString(upgVer));
 
+    restartButton.setVisible(false);
+
     if (upgVer > curVer) {
       upgNeededInfo.setText("Aktulizacja jest dostępna.");
     }
@@ -58,7 +60,8 @@ public class UpgradeDialog extends javax.swing.JDialog
     upgradeVersion = new javax.swing.JLabel();
     upgNeededInfo = new javax.swing.JLabel();
     upgradeButton = new javax.swing.JButton();
-    jButton1 = new javax.swing.JButton();
+    closeButton = new javax.swing.JButton();
+    restartButton = new javax.swing.JButton();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     setTitle("Aktualizacja");
@@ -86,12 +89,21 @@ public class UpgradeDialog extends javax.swing.JDialog
       }
     });
 
-    jButton1.setText("Zamknij");
-    jButton1.addActionListener(new java.awt.event.ActionListener()
+    closeButton.setText("Zamknij");
+    closeButton.addActionListener(new java.awt.event.ActionListener()
     {
       public void actionPerformed(java.awt.event.ActionEvent evt)
       {
-        jButton1ActionPerformed(evt);
+        closeButtonActionPerformed(evt);
+      }
+    });
+
+    restartButton.setText("Restart");
+    restartButton.addActionListener(new java.awt.event.ActionListener()
+    {
+      public void actionPerformed(java.awt.event.ActionEvent evt)
+      {
+        restartButtonActionPerformed(evt);
       }
     });
 
@@ -102,24 +114,24 @@ public class UpgradeDialog extends javax.swing.JDialog
       .addGroup(layout.createSequentialGroup()
         .addContainerGap()
         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addGroup(layout.createSequentialGroup()
-            .addGap(0, 0, Short.MAX_VALUE)
-            .addComponent(upgradeButton)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(jButton1))
-          .addGroup(layout.createSequentialGroup()
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-              .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                  .addComponent(jLabel1)
-                  .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                  .addComponent(upgradeVersion)
-                  .addComponent(currentVersion)))
-              .addComponent(upgNeededInfo))
-            .addGap(0, 11, Short.MAX_VALUE)))
-        .addContainerGap())
+          .addComponent(upgNeededInfo)
+          .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(layout.createSequentialGroup()
+              .addGap(0, 0, Short.MAX_VALUE)
+              .addComponent(upgradeButton)
+              .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+              .addComponent(closeButton)
+              .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+              .addComponent(restartButton))
+            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+              .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jLabel1)
+                .addComponent(jLabel3))
+              .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+              .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(upgradeVersion)
+                .addComponent(currentVersion)))))
+        .addContainerGap(24, Short.MAX_VALUE))
     );
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -135,9 +147,10 @@ public class UpgradeDialog extends javax.swing.JDialog
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addComponent(upgNeededInfo)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addComponent(jButton1)
-          .addComponent(upgradeButton))
+        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(upgradeButton)
+          .addComponent(restartButton)
+          .addComponent(closeButton))
         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
@@ -146,24 +159,39 @@ public class UpgradeDialog extends javax.swing.JDialog
 
   private void upgradeButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_upgradeButtonActionPerformed
   {//GEN-HEADEREND:event_upgradeButtonActionPerformed
-    if (upg.download()) {
-      System.out.println("Plik pobrany");
+    upgNeededInfo.setText("Aktulizacja w toku...");
+    upgradeButton.setEnabled(false);
+    closeButton.setEnabled(false);
+
+    if (upg.download(Config.getWorkDir())) {
+      upgNeededInfo.setText("Aktualizacja zakonczona poprawnie.");
+
+      upgradeButton.setVisible(false);
+      closeButton.setVisible(false);
+      restartButton.setVisible(true);
     }
     else {
-      System.out.println("Blad aktualizacji");
+      closeButton.setEnabled(true);
+      upgNeededInfo.setText("Aktualizacja zakonczona bledem.");
     }
   }//GEN-LAST:event_upgradeButtonActionPerformed
 
-  private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
-  {//GEN-HEADEREND:event_jButton1ActionPerformed
+  private void closeButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_closeButtonActionPerformed
+  {//GEN-HEADEREND:event_closeButtonActionPerformed
     dispose();
-  }//GEN-LAST:event_jButton1ActionPerformed
+  }//GEN-LAST:event_closeButtonActionPerformed
+
+  private void restartButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_restartButtonActionPerformed
+  {//GEN-HEADEREND:event_restartButtonActionPerformed
+    upg.restart();
+  }//GEN-LAST:event_restartButtonActionPerformed
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
+  private javax.swing.JButton closeButton;
   private javax.swing.JLabel currentVersion;
-  private javax.swing.JButton jButton1;
   private javax.swing.JLabel jLabel1;
   private javax.swing.JLabel jLabel3;
+  private javax.swing.JButton restartButton;
   private javax.swing.JLabel upgNeededInfo;
   private javax.swing.JButton upgradeButton;
   private javax.swing.JLabel upgradeVersion;

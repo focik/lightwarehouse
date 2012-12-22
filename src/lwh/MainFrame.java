@@ -78,7 +78,7 @@ public class MainFrame extends javax.swing.JFrame {
       }
     }
 
-    public static String getWorkDir()
+    private static String getWorkDir()
     {
       String jarPath = MainFrame.class.getProtectionDomain().getCodeSource().getLocation().getPath();
       String dir;
