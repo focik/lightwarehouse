@@ -1,12 +1,16 @@
 package lwh;
 
-import kbt.KeyValue;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import kbt.KeyValue;
 
 /**
  * @author cwpika
@@ -74,4 +78,49 @@ public class Magazyn
 
         return list;
     }
+
+  /**
+   * zapis do pliku csv
+   *
+   * @param magId
+   * @param selectedFile
+   */
+  public boolean exportCsv(int magId, File selectedFile)
+  {
+    DecimalFormat df0 = new DecimalFormat("0.00");
+    ArrayList<Product> list = getProductList(magId, "");
+    int pos = 0;
+    String line, sep = "\t";
+    PrintWriter out;
+
+    try {
+      out = new PrintWriter(selectedFile, "UTF-8");
+    }
+    catch (IOException ex) {
+      System.err.println(ex);
+      return false;
+    }
+
+    out.println("Lp\tNazwa\tJm\tVat\tIlość\tCena netto\tCena sprzedaży\tData");
+
+    for (Product p : list) {
+      pos++;
+
+      line =
+        String.valueOf(pos) + sep +
+        p.name + sep +
+        p.um + sep +
+        p.vat + sep +
+        p.quantity + sep +
+        df0.format(p.price) + sep +
+        df0.format(p.priceSell) + sep +
+        p.date;
+
+      out.println(line);
+    }
+
+    out.close();
+
+    return true;
+  }
 }

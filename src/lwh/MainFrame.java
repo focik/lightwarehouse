@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -111,6 +112,7 @@ public class MainFrame extends javax.swing.JFrame {
     jMenu1 = new javax.swing.JMenu();
     jMenuItem2 = new javax.swing.JMenuItem();
     jSeparator1 = new javax.swing.JPopupMenu.Separator();
+    jMenuItem4 = new javax.swing.JMenuItem();
     jMenuItem3 = new javax.swing.JMenuItem();
     jMenuItem1 = new javax.swing.JMenuItem();
 
@@ -236,6 +238,16 @@ public class MainFrame extends javax.swing.JFrame {
     jMenu1.add(jMenuItem2);
     jMenu1.add(jSeparator1);
 
+    jMenuItem4.setText("Export");
+    jMenuItem4.addActionListener(new java.awt.event.ActionListener()
+    {
+      public void actionPerformed(java.awt.event.ActionEvent evt)
+      {
+        jMenuItem4ActionPerformed(evt);
+      }
+    });
+    jMenu1.add(jMenuItem4);
+
     jMenuItem3.setText("Aktualizacja");
     jMenuItem3.addActionListener(new java.awt.event.ActionListener()
     {
@@ -316,6 +328,19 @@ public class MainFrame extends javax.swing.JFrame {
     new UpgradeDialog(this, true).setVisible(true);
   }//GEN-LAST:event_actionAktualizacja
 
+  private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jMenuItem4ActionPerformed
+  {//GEN-HEADEREND:event_jMenuItem4ActionPerformed
+    JFileChooser fc = new JFileChooser();
+    KeyValue m;
+
+    m = (KeyValue)magCombo.getSelectedItem();
+
+    fc.setSelectedFile(new File(m.value + ".csv"));
+    fc.showSaveDialog(this);
+
+    mag.exportCsv(m.key, fc.getSelectedFile());
+  }//GEN-LAST:event_jMenuItem4ActionPerformed
+
   /**
    * @param args the command line arguments
    */
@@ -353,6 +378,7 @@ public class MainFrame extends javax.swing.JFrame {
   private javax.swing.JMenuItem jMenuItem1;
   private javax.swing.JMenuItem jMenuItem2;
   private javax.swing.JMenuItem jMenuItem3;
+  private javax.swing.JMenuItem jMenuItem4;
   private javax.swing.JPanel jPanel1;
   private javax.swing.JScrollPane jScrollPane1;
   private javax.swing.JPopupMenu.Separator jSeparator1;

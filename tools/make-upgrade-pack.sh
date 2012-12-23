@@ -11,6 +11,9 @@ if mkdir $dir; then
   cp workdir/common.properties $dir
   cp workdir/start.* $dir
 
+  # nie jest wymagane, ale przyda sie przy instalacji
+  cp create.sql $dir
+
   cd $dir
   zip -r $zip *
 
