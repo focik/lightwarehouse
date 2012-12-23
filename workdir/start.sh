@@ -13,8 +13,10 @@ if [ $delayrun -gt 0 ]; then
 fi
 
 if [ -d $tmpdir ]; then
-  echo zrobic upgrade
-  # rm -rf $tmpdir
+  # plik start.sh zostal przeniesiony i usuniety wczesniej
+  cp -f $tmpdir/* .
+  rm -rf $tmpdir
 fi
 
-java -jar magazyn.jar
+# uruchom aplikacje
+java -jar lightwarehouse.jar

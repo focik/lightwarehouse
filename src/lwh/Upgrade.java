@@ -7,13 +7,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.CopyOption;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import kbt.Config;
 import kbt.Filesystem;
 import kbt.Zip;
@@ -117,8 +113,8 @@ public class Upgrade
   private void copyStarter(String targetdir)
   {
     try {
-      Files.copy(Paths.get(targetdir, loaderLin), Paths.get(Config.getWorkDir(), loaderLin), StandardCopyOption.REPLACE_EXISTING);
-      Files.copy(Paths.get(targetdir, loaderWin), Paths.get(Config.getWorkDir(), loaderWin), StandardCopyOption.REPLACE_EXISTING);
+      Files.move(Paths.get(targetdir, loaderLin), Paths.get(Config.getWorkDir(), loaderLin), StandardCopyOption.REPLACE_EXISTING);
+      Files.move(Paths.get(targetdir, loaderWin), Paths.get(Config.getWorkDir(), loaderWin), StandardCopyOption.REPLACE_EXISTING);
     }
     catch (IOException ex) {
       System.err.println(ex);

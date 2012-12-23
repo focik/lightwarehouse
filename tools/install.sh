@@ -1,8 +1,6 @@
 #!/bin/sh
 
-dir=~/Desktop/lwhtest
-
-rm -rf $dir
+dir=$1
 
 cp -r dist $dir
 cp workdir/common.properties $dir
