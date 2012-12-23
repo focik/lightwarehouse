@@ -4,6 +4,7 @@
  */
 package kbt;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -34,8 +35,12 @@ public class Config
     if (props == null) {
       props = new Properties();
 
-      loadFile("common.properties");
-      loadFile("user.properties");
+      loadFile(workDir + "/" +"common.properties");
+
+      // plik uzytkownika nie musi istniec
+      if ((new File(workDir + "/" +"user.properties")).exists()) {
+        loadFile(workDir + "/" +"user.properties");
+      }
     }
 
     value = props.getProperty(key);
@@ -45,20 +50,11 @@ public class Config
 
   private static void loadFile(String filename)
   {
-    FileInputStream fcommon;
-    String confPath;
-
-    confPath = workDir + "/" + filename;
-
     try {
-      fcommon = new FileInputStream(confPath);
-      props.load(fcommon);
-    }
-    catch (FileNotFoundException e) {
-      System.out.println(e);
+      props.load(new FileInputStream(filename));
     }
     catch (IOException e) {
-      System.out.println(e);
+      System.err.println(e);
     }
   }
 

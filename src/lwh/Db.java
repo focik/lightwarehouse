@@ -6,7 +6,11 @@ package lwh;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import kbt.Config;
 
 /**
@@ -51,4 +55,17 @@ public class Db
     }
   }
 
+  public static int getDbVer()
+  {
+    try {
+      Statement st = getDb().createStatement();
+      ResultSet rs = st.executeQuery("SELECT version FROM dbver");
+
+      rs.next();
+      return rs.getInt("version");
+    }
+    catch (SQLException ex) {
+      return 0;
+    }
+  }
 }

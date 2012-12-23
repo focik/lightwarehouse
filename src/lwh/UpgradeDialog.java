@@ -26,7 +26,7 @@ public class UpgradeDialog extends javax.swing.JDialog
     int upgVer, curVer;
 
     upg = new Upgrade();
-    upg.setUrl(Config.get("magazyn.upgrade.version"), Config.get("magazyn.upgrade.current"));
+    upg.setUrl(Config.get("upgrade.url"));
 
     upgVer = upg.getVersion();
     curVer = Integer.parseInt(Config.get("version"));

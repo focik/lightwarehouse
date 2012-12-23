@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import kbt.Config;
@@ -22,11 +23,10 @@ public class Upgrade
   private final String loaderWin = "start.bat";
   private final String loaderLin = "start.sh";
 
-  public boolean setUrl(String vUrl, String fUrl)
+  public boolean setUrl(String url)
   {
     try {
-      fileUrl = new URL(fUrl);
-      versionUrl = new URL(vUrl);
+      versionUrl = new URL(url);
     }
     catch (MalformedURLException ex) {
       return false;
@@ -43,6 +43,7 @@ public class Upgrade
       BufferedReader in = new BufferedReader(new InputStreamReader(versionUrl.openStream()));
 
       ver = Integer.parseInt(in.readLine());
+      fileUrl = new URL(in.readLine());
     }
     catch (IOException ex) {
       return 0;
@@ -51,6 +52,11 @@ public class Upgrade
     return ver;
   }
 
+  /**
+   * wymagane wczesniejsze wykonanie getVersion() aby okreslic link do zip
+   * @param workdir
+   * @return true/false
+   */
   public boolean download(String workdir)
   {
     File tmpfile, target;
@@ -101,7 +107,7 @@ public class Upgrade
     loader = Paths.get(Config.getWorkDir(), loader).toString();
 
     try {
-      Runtime.getRuntime().exec(loader, new String[]{"delayrun=3"});
+      Runtime.getRuntime().exec(loader + " delay");
     }
     catch (IOException ex) {
       System.err.println(ex);
@@ -112,12 +118,28 @@ public class Upgrade
 
   private void copyStarter(String targetdir)
   {
+    Path sLin = Paths.get(Config.getWorkDir(), loaderLin);
+    Path sWin = Paths.get(Config.getWorkDir(), loaderWin);
+
     try {
-      Files.move(Paths.get(targetdir, loaderLin), Paths.get(Config.getWorkDir(), loaderLin), StandardCopyOption.REPLACE_EXISTING);
-      Files.move(Paths.get(targetdir, loaderWin), Paths.get(Config.getWorkDir(), loaderWin), StandardCopyOption.REPLACE_EXISTING);
+      Files.move(Paths.get(targetdir, loaderLin), sLin, StandardCopyOption.REPLACE_EXISTING);
+      Files.move(Paths.get(targetdir, loaderWin), sWin, StandardCopyOption.REPLACE_EXISTING);
+
+      sLin.toFile().setExecutable(true);
+      sWin.toFile().setExecutable(true);
     }
     catch (IOException ex) {
       System.err.println(ex);
+    }
+  }
+
+  public void updateDb()
+  {
+    int dbver = Db.getDbVer();
+    int appver = Integer.parseInt(Config.get("version"));
+
+    if (appver > dbver) {
+      System.err.println("Wymagana aktualizacja bazy danych");
     }
   }
 }

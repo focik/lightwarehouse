@@ -1,6 +1,6 @@
 #!/bin/sh
 
-cd `dirname $0`
+cd `dirname $0`/..
 
 dir=$1
 zip=$dir.zip
@@ -13,4 +13,8 @@ if mkdir $dir; then
 
   cd $dir
   zip -r $zip *
+
+  rm -rf $dir
+
+  echo Pack: $zip
 fi

@@ -318,6 +318,7 @@ public class MainFrame extends javax.swing.JFrame {
   public static void main(String[] args)
   {
     String workdir;
+    Upgrade upg = new Upgrade();
 
     if (args.length > 0) {
       //tryb debug - jawnie podany katalog aplikacji
@@ -327,6 +328,8 @@ public class MainFrame extends javax.swing.JFrame {
       workdir = getWorkDir();
     }
     Config.setWorkDir(workdir);
+
+    upg.updateDb();
 
     // program moze byc wywolywany przez magazynstart
     java.awt.EventQueue.invokeLater(new Runnable() {
