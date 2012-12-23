@@ -31,6 +31,7 @@ public class MainFrame extends javax.swing.JFrame {
       DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
       rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
       jTable1.getColumnModel().getColumn(5).setCellRenderer(rightRenderer);
+      jTable1.getColumnModel().getColumn(6).setCellRenderer(rightRenderer);
 
       filter.requestFocus();
 
@@ -71,6 +72,7 @@ public class MainFrame extends javax.swing.JFrame {
           p.vat,
           p.quantity,
           df0.format(p.price),
+          df0.format(p.priceSell),
           p.date
         });
 
@@ -167,21 +169,21 @@ public class MainFrame extends javax.swing.JFrame {
     jTable1.setModel(new javax.swing.table.DefaultTableModel(
       new Object [][]
       {
-        {null, null, null, null, null, null, null}
+        {null, null, null, null, null, null, null, null}
       },
       new String []
       {
-        "Lp", "Nazwa", "Jm", "Vat", "Ilość", "Cena", "Data"
+        "Lp", "Nazwa", "Jm", "Vat", "Ilość", "Cena netto", "Cena sprzedaży", "Data"
       }
     )
     {
       Class[] types = new Class []
       {
-        java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.String.class, java.lang.String.class
+        java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
       };
       boolean[] canEdit = new boolean []
       {
-        false, false, false, false, false, false, false
+        false, false, false, false, false, false, false, false
       };
 
       public Class getColumnClass(int columnIndex)
@@ -214,8 +216,10 @@ public class MainFrame extends javax.swing.JFrame {
     jTable1.getColumnModel().getColumn(4).setMaxWidth(70);
     jTable1.getColumnModel().getColumn(5).setMinWidth(20);
     jTable1.getColumnModel().getColumn(5).setMaxWidth(70);
-    jTable1.getColumnModel().getColumn(6).setMinWidth(80);
-    jTable1.getColumnModel().getColumn(6).setMaxWidth(120);
+    jTable1.getColumnModel().getColumn(6).setMinWidth(20);
+    jTable1.getColumnModel().getColumn(6).setMaxWidth(70);
+    jTable1.getColumnModel().getColumn(7).setMinWidth(80);
+    jTable1.getColumnModel().getColumn(7).setMaxWidth(120);
 
     jSplitPane1.setRightComponent(jScrollPane1);
 

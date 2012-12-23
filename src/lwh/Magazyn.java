@@ -41,7 +41,7 @@ public class Magazyn
         Product p;
         String sql;
 
-        sql = "SELECT p.id, p.name, p.um, p.vat, p.price, p.mod_date, p.quantity "
+        sql = "SELECT p.id, p.name, p.um, p.vat, p.price, p.price_sell, p.mod_date, p.quantity "
                     + "FROM product p "
                     + "WHERE p.id_store = ? AND p.name LIKE ? ORDER BY name";
 
@@ -61,6 +61,7 @@ public class Magazyn
             p.um = rs.getString("um");
             p.vat = rs.getInt("vat");
             p.price = rs.getFloat("price");
+            p.priceSell = rs.getFloat("price_sell");
             p.date = rs.getString("mod_date");
             p.quantity = rs.getFloat("quantity");
 

@@ -65,6 +65,7 @@ public class ProductDialog extends javax.swing.JDialog
     prodJm.setText(prod.um);
     prodVat.setText(Integer.toString(prod.vat));
     prodCena.setText(df0.format(prod.price));
+    prodCenaSprz.setText(df0.format(prod.priceSell));
     obecnaIlosc.setText(df.format(prod.quantity));
 
     magCombo.setSelectedItem(magList.get(prod.magId));
@@ -121,6 +122,8 @@ public class ProductDialog extends javax.swing.JDialog
     prodIlosc.setBackground(bg);
     prodCena.setToolTipText(null);
     prodCena.setBackground(bg);
+    prodCenaSprz.setToolTipText(null);
+    prodCenaSprz.setBackground(bg);
     prodVat.setToolTipText(null);
     prodVat.setBackground(bg);
 
@@ -160,6 +163,15 @@ public class ProductDialog extends javax.swing.JDialog
     catch (NumberFormatException e) {
       prodCena.setToolTipText("Poprawny format ceny: 9.99");
       prodCena.setBackground(Color.red);
+      ok = false;
+    }
+
+    try {
+      prod.priceSell = Float.valueOf(prodCenaSprz.getText().replace(",", "."));
+    }
+    catch (NumberFormatException e) {
+      prodCenaSprz.setToolTipText("Poprawny format ceny sprzedaży: 9.99");
+      prodCenaSprz.setBackground(Color.red);
       ok = false;
     }
 
@@ -222,6 +234,8 @@ public class ProductDialog extends javax.swing.JDialog
     buttonUsun = new javax.swing.JButton();
     jLabel8 = new javax.swing.JLabel();
     obecnaIlosc = new javax.swing.JLabel();
+    jLabel9 = new javax.swing.JLabel();
+    prodCenaSprz = new javax.swing.JTextField();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -235,7 +249,7 @@ public class ProductDialog extends javax.swing.JDialog
 
     jLabel5.setText("Ilość");
 
-    jLabel6.setText("Cena");
+    jLabel6.setText("Cena netto");
 
     jLabel7.setText("Data");
 
@@ -284,6 +298,8 @@ public class ProductDialog extends javax.swing.JDialog
 
     obecnaIlosc.setText("0");
 
+    jLabel9.setText("Cena sprz.");
+
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
     getContentPane().setLayout(layout);
     layout.setHorizontalGroup(
@@ -294,20 +310,34 @@ public class ProductDialog extends javax.swing.JDialog
           .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
           .addGroup(layout.createSequentialGroup()
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+              .addGroup(layout.createSequentialGroup()
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonZapiszNowy)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonUsun))
+              .addGroup(layout.createSequentialGroup()
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(prodData, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGap(0, 61, Short.MAX_VALUE))
+          .addGroup(layout.createSequentialGroup()
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
               .addComponent(jLabel1)
               .addComponent(jLabel2)
               .addComponent(jLabel3)
               .addComponent(jLabel4)
               .addComponent(jLabel5)
               .addComponent(jLabel6)
-              .addComponent(jLabel7))
+              .addComponent(jLabel9))
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
               .addComponent(prodName)
               .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                   .addComponent(magCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                  .addComponent(prodData, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                   .addGroup(layout.createSequentialGroup()
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                       .addComponent(prodCena, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE)
@@ -317,17 +347,9 @@ public class ProductDialog extends javax.swing.JDialog
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(jLabel8)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(obecnaIlosc)))
-                .addGap(0, 0, Short.MAX_VALUE))))
-          .addGroup(layout.createSequentialGroup()
-            .addComponent(jButton1)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(buttonZapiszNowy)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(jButton3)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(buttonUsun)
-            .addGap(0, 61, Short.MAX_VALUE)))
+                    .addComponent(obecnaIlosc))
+                  .addComponent(prodCenaSprz, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE)))))
         .addContainerGap())
     );
     layout.setVerticalGroup(
@@ -361,11 +383,15 @@ public class ProductDialog extends javax.swing.JDialog
           .addComponent(prodCena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(jLabel9)
+          .addComponent(prodCenaSprz, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(prodData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
           .addComponent(jLabel7))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(jButton1)
           .addComponent(buttonZapiszNowy)
@@ -416,10 +442,12 @@ public class ProductDialog extends javax.swing.JDialog
   private javax.swing.JLabel jLabel6;
   private javax.swing.JLabel jLabel7;
   private javax.swing.JLabel jLabel8;
+  private javax.swing.JLabel jLabel9;
   private javax.swing.JSeparator jSeparator1;
   private javax.swing.JComboBox<KeyValue> magCombo;
   private javax.swing.JLabel obecnaIlosc;
   private javax.swing.JTextField prodCena;
+  private javax.swing.JTextField prodCenaSprz;
   private javax.swing.JTextField prodData;
   private javax.swing.JTextField prodIlosc;
   private javax.swing.JTextField prodJm;

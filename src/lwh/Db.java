@@ -9,8 +9,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import kbt.Config;
 
 /**
@@ -49,7 +47,7 @@ public class Db
         db.close();
       }
       catch (SQLException e) {
-        System.out.println("db close: " + e);
+        System.err.println("db close: " + e);
       }
       db = null;
     }

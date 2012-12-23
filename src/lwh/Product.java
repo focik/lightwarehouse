@@ -21,6 +21,7 @@ public class Product
   public int vat;
   public float quantity;
   public float price;
+  public float priceSell;
   public String date;
 
   Product(int prodId)
@@ -28,7 +29,7 @@ public class Product
     String sql;
     PreparedStatement st;
 
-    sql = "SELECT p.name, p.um, p.vat, p.quantity, p.price, p.mod_date, p.id_store " +
+    sql = "SELECT p.name, p.um, p.vat, p.quantity, p.price, p.price_sell, p.mod_date, p.id_store " +
           "FROM product p " +
           "WHERE p.id = ?";
 
@@ -45,6 +46,7 @@ public class Product
         um = rs.getString("um");
         vat = rs.getInt("vat");
         price = rs.getFloat("price");
+        priceSell = rs.getFloat("price_sell");
         date = rs.getString("mod_date");
         quantity = rs.getFloat("quantity");
         magId = rs.getInt("id_store");
@@ -71,6 +73,7 @@ public class Product
             "vat = ?, " +
             "quantity = ?, " +
             "price = ?, " +
+            "price_sell = ?, " +
             "mod_date = ?, " +
             "id_store = ? " +
             "WHERE id = ?";
@@ -79,10 +82,8 @@ public class Product
     }
     else {
       sql = "INSERT INTO product " +
-            "(name, um, vat, quantity, price, mod_date, id_store) VALUES " +
-            "(?, ?, ?, ?, ?, ?, ?)";
-
-      //System.out.println("nowy produkt");
+            "(name, um, vat, quantity, price, price_sell, mod_date, id_store) VALUES " +
+            "(?, ?, ?, ?, ?, ?, ?, ?)";
     }
 
     try {
@@ -92,10 +93,11 @@ public class Product
       st.setInt(3, vat);
       st.setFloat(4, quantity);
       st.setFloat(5, price);
-      st.setString(6, date);
-      st.setInt(7, magId);
+      st.setFloat(6, priceSell);
+      st.setString(7, date);
+      st.setInt(8, magId);
       if (id > 0) {
-        st.setInt(8, id);
+        st.setInt(9, id);
       }
 
       st.executeUpdate();
@@ -104,7 +106,7 @@ public class Product
       Db.close();
     }
     catch (SQLException e) {
-      System.out.println(e);
+      System.err.println(e);
     }
 
     return true;
