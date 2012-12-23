@@ -1,9 +1,0 @@
-.gitignore
-dist
-build
-build.xml
-workdir/magazyn.sqlite
-Test.*
-todo.txt
-nbproject
-manifest.mf
