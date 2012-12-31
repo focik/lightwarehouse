@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import kbt.Config;
@@ -243,7 +244,7 @@ public class MainFrame extends javax.swing.JFrame {
     {
       public void actionPerformed(java.awt.event.ActionEvent evt)
       {
-        jMenuItem4ActionPerformed(evt);
+        jMenuItem4ActionExport(evt);
       }
     });
     jMenu1.add(jMenuItem4);
@@ -328,18 +329,40 @@ public class MainFrame extends javax.swing.JFrame {
     new UpgradeDialog(this, true).setVisible(true);
   }//GEN-LAST:event_actionAktualizacja
 
-  private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jMenuItem4ActionPerformed
-  {//GEN-HEADEREND:event_jMenuItem4ActionPerformed
-    JFileChooser fc = new JFileChooser();
+  /**
+   * export
+   * @param evt
+   */
+  private void jMenuItem4ActionExport(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jMenuItem4ActionExport
+  {//GEN-HEADEREND:event_jMenuItem4ActionExport
     KeyValue m;
+    JFileChooser fc = new JFileChooser(){
+      @Override
+      public void approveSelection()
+      {
+        File f = getSelectedFile();
+        if (f.exists()) {
+            int result = JOptionPane.showConfirmDialog(this,
+                                                       "Plik istnieje, czy chcesz go nadpisac?",
+                                                       "Plik istnieje.",
+                                                       JOptionPane.YES_NO_OPTION);
+            if (result == JOptionPane.YES_OPTION) {
+              super.approveSelection();
+            }
+        }
+        else {
+          super.approveSelection();
+        }
+      }
+    };
 
     m = (KeyValue)magCombo.getSelectedItem();
 
     fc.setSelectedFile(new File(m.value + ".csv"));
-    fc.showSaveDialog(this);
-
-    mag.exportCsv(m.key, fc.getSelectedFile());
-  }//GEN-LAST:event_jMenuItem4ActionPerformed
+    if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+      mag.exportCsv(m.key, fc.getSelectedFile());
+    }
+  }//GEN-LAST:event_jMenuItem4ActionExport
 
   /**
    * @param args the command line arguments
