@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import kbt.Config;
+import kbt.I18n;
 import kbt.KeyValue;
 
 /**
@@ -118,7 +119,8 @@ public class MainFrame extends javax.swing.JFrame {
     jMenuItem1 = new javax.swing.JMenuItem();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-    setTitle("Magazyn");
+    java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("lwh/resources/messages"); // NOI18N
+    setTitle(bundle.getString("MainFrame.title")); // NOI18N
 
     jSplitPane1.setDividerSize(0);
     jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
@@ -139,7 +141,7 @@ public class MainFrame extends javax.swing.JFrame {
       }
     });
 
-    jButton1.setText("Szukaj");
+    jButton1.setText(bundle.getString("MainFrame.jButton1.text")); // NOI18N
     jButton1.addActionListener(new java.awt.event.ActionListener()
     {
       public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -211,24 +213,32 @@ public class MainFrame extends javax.swing.JFrame {
     jScrollPane1.setViewportView(jTable1);
     jTable1.getColumnModel().getColumn(0).setMinWidth(20);
     jTable1.getColumnModel().getColumn(0).setMaxWidth(50);
+    jTable1.getColumnModel().getColumn(0).setHeaderValue(bundle.getString("MainFrame.jTable1.columnModel.title0_1")); // NOI18N
+    jTable1.getColumnModel().getColumn(1).setHeaderValue(bundle.getString("MainFrame.jTable1.columnModel.title1_1")); // NOI18N
     jTable1.getColumnModel().getColumn(2).setMinWidth(20);
     jTable1.getColumnModel().getColumn(2).setMaxWidth(70);
+    jTable1.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("MainFrame.jTable1.columnModel.title2_1")); // NOI18N
     jTable1.getColumnModel().getColumn(3).setMinWidth(20);
     jTable1.getColumnModel().getColumn(3).setMaxWidth(70);
+    jTable1.getColumnModel().getColumn(3).setHeaderValue(bundle.getString("MainFrame.jTable1.columnModel.title3_1")); // NOI18N
     jTable1.getColumnModel().getColumn(4).setMinWidth(20);
     jTable1.getColumnModel().getColumn(4).setMaxWidth(70);
+    jTable1.getColumnModel().getColumn(4).setHeaderValue(bundle.getString("MainFrame.jTable1.columnModel.title4_1")); // NOI18N
     jTable1.getColumnModel().getColumn(5).setMinWidth(20);
     jTable1.getColumnModel().getColumn(5).setMaxWidth(70);
+    jTable1.getColumnModel().getColumn(5).setHeaderValue(bundle.getString("MainFrame.jTable1.columnModel.title5_1")); // NOI18N
     jTable1.getColumnModel().getColumn(6).setMinWidth(20);
     jTable1.getColumnModel().getColumn(6).setMaxWidth(70);
+    jTable1.getColumnModel().getColumn(6).setHeaderValue(bundle.getString("MainFrame.jTable1.columnModel.title6_1")); // NOI18N
     jTable1.getColumnModel().getColumn(7).setMinWidth(80);
     jTable1.getColumnModel().getColumn(7).setMaxWidth(120);
+    jTable1.getColumnModel().getColumn(7).setHeaderValue(bundle.getString("MainFrame.jTable1.columnModel.title7_1")); // NOI18N
 
     jSplitPane1.setRightComponent(jScrollPane1);
 
-    jMenu1.setText("Magazyn");
+    jMenu1.setText(bundle.getString("MainFrame.jMenu1.text")); // NOI18N
 
-    jMenuItem2.setText("Dodaj nowy produkt");
+    jMenuItem2.setText(bundle.getString("MainFrame.jMenuItem2.text")); // NOI18N
     jMenuItem2.addActionListener(new java.awt.event.ActionListener()
     {
       public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -239,7 +249,7 @@ public class MainFrame extends javax.swing.JFrame {
     jMenu1.add(jMenuItem2);
     jMenu1.add(jSeparator1);
 
-    jMenuItem4.setText("Export");
+    jMenuItem4.setText(bundle.getString("MainFrame.jMenuItem4.text")); // NOI18N
     jMenuItem4.addActionListener(new java.awt.event.ActionListener()
     {
       public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -249,7 +259,7 @@ public class MainFrame extends javax.swing.JFrame {
     });
     jMenu1.add(jMenuItem4);
 
-    jMenuItem3.setText("Aktualizacja");
+    jMenuItem3.setText(bundle.getString("MainFrame.jMenuItem3.text")); // NOI18N
     jMenuItem3.addActionListener(new java.awt.event.ActionListener()
     {
       public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -259,7 +269,7 @@ public class MainFrame extends javax.swing.JFrame {
     });
     jMenu1.add(jMenuItem3);
 
-    jMenuItem1.setText("Wyjście");
+    jMenuItem1.setText(bundle.getString("MainFrame.jMenuItem1.text")); // NOI18N
     jMenuItem1.addActionListener(new java.awt.event.ActionListener()
     {
       public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -343,8 +353,8 @@ public class MainFrame extends javax.swing.JFrame {
         File f = getSelectedFile();
         if (f.exists()) {
             int result = JOptionPane.showConfirmDialog(this,
-                                                       "Plik istnieje, czy chcesz go nadpisac?",
-                                                       "Plik istnieje.",
+                                                       I18n.tr("msg.MainFrame.Plik_istnieje.czy_chcesz_go_nadpisac"),
+                                                       I18n.tr("msg.MainFrame.PLik_istnieje"),
                                                        JOptionPane.YES_NO_OPTION);
             if (result == JOptionPane.YES_OPTION) {
               super.approveSelection();
@@ -380,6 +390,8 @@ public class MainFrame extends javax.swing.JFrame {
       workdir = getWorkDir();
     }
     Config.setWorkDir(workdir);
+
+    I18n.setLocale(Config.get("lang"));
 
     upg.updateDb();
 

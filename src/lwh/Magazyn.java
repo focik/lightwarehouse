@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import kbt.I18n;
 import kbt.KeyValue;
 
 /**
@@ -101,7 +102,15 @@ public class Magazyn
       return false;
     }
 
-    out.println("Lp\tNazwa\tJm\tVat\tIlość\tCena netto\tCena sprzedaży\tData");
+    out.println(
+      I18n.tr("MainFrame.jTable1.columnModel.title0_1") + "\t" +
+      I18n.tr("MainFrame.jTable1.columnModel.title1_1") + "\t" +
+      I18n.tr("MainFrame.jTable1.columnModel.title2_1") + "\t" +
+      I18n.tr("MainFrame.jTable1.columnModel.title3_1") + "\t" +
+      I18n.tr("MainFrame.jTable1.columnModel.title4_1") + "\t" +
+      I18n.tr("MainFrame.jTable1.columnModel.title5_1") + "\t" +
+      I18n.tr("MainFrame.jTable1.columnModel.title6_1") + "\t" +
+      I18n.tr("MainFrame.jTable1.columnModel.title7_1") + "\t");
 
     for (Product p : list) {
       pos++;

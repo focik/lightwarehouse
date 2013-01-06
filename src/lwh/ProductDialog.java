@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.*;
+import kbt.I18n;
 import kbt.KeyValue;
 
 /**
@@ -128,19 +129,19 @@ public class ProductDialog extends javax.swing.JDialog
     prodVat.setBackground(bg);
 
     if (magCombo.getSelectedItem() == null) {
-      magCombo.setToolTipText("Produkt powinien zostać przypisany do magazynu");
+      magCombo.setToolTipText(I18n.tr("msg.Product.Produkt_powinien_zostac_przypisany_do_magazynu"));
       magCombo.setBackground(Color.red);
       ok = false;
     }
 
     if (prodName.getText().isEmpty()) {
-      prodName.setToolTipText("Nie podano nazwa produktu");
+      prodName.setToolTipText(I18n.tr("msg.Product.Nie_podano_nazwy_produktu"));
       prodName.setBackground(Color.red);
       ok = false;
     }
 
     if (!prodData.getText().matches("^[0-9]{4}-[0-9]{2}-[0-9]{2}$")) {
-      prodData.setToolTipText("Poprawny format daty: 9999-99-99");
+      prodData.setToolTipText(I18n.tr("msg.Product.Poprawny_format_daty"));
       prodData.setBackground(Color.red);
       ok = false;
     }
@@ -151,7 +152,7 @@ public class ProductDialog extends javax.swing.JDialog
         prod.quantity += Float.valueOf(prodIlosc.getText().replace(",", "."));
       }
       catch (NumberFormatException e) {
-        prodIlosc.setToolTipText("Poprawny format ilości: 9.99");
+        prodIlosc.setToolTipText(I18n.tr("msg.Product.Poprawny_format_ilosci"));
         prodIlosc.setBackground(Color.red);
         ok = false;
       }
@@ -161,7 +162,7 @@ public class ProductDialog extends javax.swing.JDialog
       prod.price = Float.valueOf(prodCena.getText().replace(",", "."));
     }
     catch (NumberFormatException e) {
-      prodCena.setToolTipText("Poprawny format ceny: 9.99");
+      prodCena.setToolTipText(I18n.tr("msg.Product.Poprawny_format_ceny"));
       prodCena.setBackground(Color.red);
       ok = false;
     }
@@ -170,7 +171,7 @@ public class ProductDialog extends javax.swing.JDialog
       prod.priceSell = Float.valueOf(prodCenaSprz.getText().replace(",", "."));
     }
     catch (NumberFormatException e) {
-      prodCenaSprz.setToolTipText("Poprawny format ceny sprzedaży: 9.99");
+      prodCenaSprz.setToolTipText(I18n.tr("msg.Product.Poprawny_format_ceny_sprzedazy"));
       prodCenaSprz.setBackground(Color.red);
       ok = false;
     }
@@ -179,7 +180,7 @@ public class ProductDialog extends javax.swing.JDialog
       prod.vat = Integer.valueOf(prodVat.getText());
     }
     catch (NumberFormatException e) {
-      prodVat.setToolTipText("Poprawny format stawki vat: 99");
+      prodVat.setToolTipText(I18n.tr("msg.Product.Poprawny_format_stawki_vat"));
       prodVat.setBackground(Color.red);
       ok = false;
     }
@@ -238,27 +239,29 @@ public class ProductDialog extends javax.swing.JDialog
     prodCenaSprz = new javax.swing.JTextField();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+    java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("lwh/resources/messages"); // NOI18N
+    setTitle(bundle.getString("ProductDialog.title")); // NOI18N
 
-    jLabel1.setText("Magazyn");
+    jLabel1.setText(bundle.getString("ProductDialog.jLabel1.text")); // NOI18N
 
-    jLabel2.setText("Nazwa");
+    jLabel2.setText(bundle.getString("ProductDialog.jLabel2.text")); // NOI18N
 
-    jLabel3.setText("Jm");
+    jLabel3.setText(bundle.getString("ProductDialog.jLabel3.text")); // NOI18N
 
-    jLabel4.setText("Vat");
+    jLabel4.setText(bundle.getString("ProductDialog.jLabel4.text")); // NOI18N
 
-    jLabel5.setText("Ilość");
+    jLabel5.setText(bundle.getString("ProductDialog.jLabel5.text")); // NOI18N
 
-    jLabel6.setText("Cena netto");
+    jLabel6.setText(bundle.getString("ProductDialog.jLabel6.text")); // NOI18N
 
-    jLabel7.setText("Data");
+    jLabel7.setText(bundle.getString("ProductDialog.jLabel7.text")); // NOI18N
 
-    prodName.setToolTipText("");
+    prodName.setToolTipText(bundle.getString("ProductDialog.prodName.toolTipText")); // NOI18N
 
-    prodData.setText("2012-01-30");
+    prodData.setText(bundle.getString("ProductDialog.prodData.text")); // NOI18N
 
     jButton1.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
-    jButton1.setText("Zapisz");
+    jButton1.setText(bundle.getString("ProductDialog.jButton1.text")); // NOI18N
     jButton1.addActionListener(new java.awt.event.ActionListener()
     {
       public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -267,7 +270,7 @@ public class ProductDialog extends javax.swing.JDialog
       }
     });
 
-    buttonZapiszNowy.setText("Zapisz jako nowy");
+    buttonZapiszNowy.setText(bundle.getString("ProductDialog.buttonZapiszNowy.text")); // NOI18N
     buttonZapiszNowy.addActionListener(new java.awt.event.ActionListener()
     {
       public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -276,7 +279,7 @@ public class ProductDialog extends javax.swing.JDialog
       }
     });
 
-    jButton3.setText("Anuluj");
+    jButton3.setText(bundle.getString("ProductDialog.jButton3.text")); // NOI18N
     jButton3.addActionListener(new java.awt.event.ActionListener()
     {
       public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -285,7 +288,7 @@ public class ProductDialog extends javax.swing.JDialog
       }
     });
 
-    buttonUsun.setText("Usuń");
+    buttonUsun.setText(bundle.getString("ProductDialog.buttonUsun.text")); // NOI18N
     buttonUsun.addActionListener(new java.awt.event.ActionListener()
     {
       public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -294,11 +297,11 @@ public class ProductDialog extends javax.swing.JDialog
       }
     });
 
-    jLabel8.setText("+");
+    jLabel8.setText(bundle.getString("ProductDialog.jLabel8.text")); // NOI18N
 
-    obecnaIlosc.setText("0");
+    obecnaIlosc.setText(bundle.getString("ProductDialog.obecnaIlosc.text")); // NOI18N
 
-    jLabel9.setText("Cena sprz.");
+    jLabel9.setText(bundle.getString("ProductDialog.jLabel9.text")); // NOI18N
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
     getContentPane().setLayout(layout);
@@ -416,8 +419,8 @@ public class ProductDialog extends javax.swing.JDialog
   {//GEN-HEADEREND:event_btnUsun
     int opt;
     opt = JOptionPane.showConfirmDialog(null,
-                                        "Czy na pewno usunąć produkt \"" + prod.name + "\"?",
-                                        "Usuwanie produktu",
+                                        String.format(I18n.tr("msg.Product.Czy_na_pewno_usunąć_produkt_s"), prod.name),
+                                        I18n.tr("msg.Product.Usuwanie_produktu"),
                                         JOptionPane.YES_NO_OPTION);
     if (opt == JOptionPane.YES_OPTION) {
       delProduct();

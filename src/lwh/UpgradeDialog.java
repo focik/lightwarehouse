@@ -5,6 +5,7 @@
 package lwh;
 
 import kbt.Config;
+import kbt.I18n;
 
 /**
  *
@@ -37,7 +38,7 @@ public class UpgradeDialog extends javax.swing.JDialog
     restartButton.setVisible(false);
 
     if (upgVer > curVer) {
-      upgNeededInfo.setText("Aktulizacja jest dostępna.");
+      upgNeededInfo.setText(I18n.tr("msg.Aktulizacja.jest.dostepna"));
     }
     else {
       upgradeButton.setEnabled(false);
@@ -64,23 +65,24 @@ public class UpgradeDialog extends javax.swing.JDialog
     restartButton = new javax.swing.JButton();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-    setTitle("Aktualizacja");
+    java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("lwh/resources/messages"); // NOI18N
+    setTitle(bundle.getString("UpgradeDialog.title")); // NOI18N
 
-    jLabel1.setText("Aktualnie zainstalowana wersja:");
+    jLabel1.setText(bundle.getString("UpgradeDialog.jLabel1.text")); // NOI18N
 
     currentVersion.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
     currentVersion.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-    currentVersion.setText("0");
+    currentVersion.setText(bundle.getString("UpgradeDialog.currentVersion.text")); // NOI18N
 
-    jLabel3.setText("Wersja dostępna do pobrania:");
+    jLabel3.setText(bundle.getString("UpgradeDialog.jLabel3.text")); // NOI18N
 
     upgradeVersion.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
     upgradeVersion.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-    upgradeVersion.setText("0");
+    upgradeVersion.setText(bundle.getString("UpgradeDialog.upgradeVersion.text")); // NOI18N
 
-    upgNeededInfo.setText("Aktualizacja nie jest wymagana.");
+    upgNeededInfo.setText(bundle.getString("UpgradeDialog.upgNeededInfo.text")); // NOI18N
 
-    upgradeButton.setText("Pobierz");
+    upgradeButton.setText(bundle.getString("UpgradeDialog.upgradeButton.text")); // NOI18N
     upgradeButton.addActionListener(new java.awt.event.ActionListener()
     {
       public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -89,7 +91,7 @@ public class UpgradeDialog extends javax.swing.JDialog
       }
     });
 
-    closeButton.setText("Zamknij");
+    closeButton.setText(bundle.getString("UpgradeDialog.closeButton.text")); // NOI18N
     closeButton.addActionListener(new java.awt.event.ActionListener()
     {
       public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -98,7 +100,7 @@ public class UpgradeDialog extends javax.swing.JDialog
       }
     });
 
-    restartButton.setText("Restart");
+    restartButton.setText(bundle.getString("UpgradeDialog.restartButton.text")); // NOI18N
     restartButton.addActionListener(new java.awt.event.ActionListener()
     {
       public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -159,12 +161,12 @@ public class UpgradeDialog extends javax.swing.JDialog
 
   private void upgradeButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_upgradeButtonActionPerformed
   {//GEN-HEADEREND:event_upgradeButtonActionPerformed
-    upgNeededInfo.setText("Aktulizacja w toku...");
+    upgNeededInfo.setText(I18n.tr("msg.Aktulizacja.w.toku"));
     upgradeButton.setEnabled(false);
     closeButton.setEnabled(false);
 
     if (upg.download(Config.getWorkDir())) {
-      upgNeededInfo.setText("Aktualizacja zakonczona poprawnie.");
+      upgNeededInfo.setText(I18n.tr("msg.Aktualizacja.zakonczona.poprawnie"));
 
       upgradeButton.setVisible(false);
       closeButton.setVisible(false);
@@ -172,7 +174,7 @@ public class UpgradeDialog extends javax.swing.JDialog
     }
     else {
       closeButton.setEnabled(true);
-      upgNeededInfo.setText("Aktualizacja zakonczona bledem.");
+      upgNeededInfo.setText(I18n.tr("msg.Aktualizacja.zakonczona.bledem"));
     }
   }//GEN-LAST:event_upgradeButtonActionPerformed
 
