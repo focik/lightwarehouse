@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import kbt.I18n;
 import kbt.KeyValue;
+import kbt.PrintFormat;
 
 /**
  * @author cwpika
@@ -88,7 +89,8 @@ public class Magazyn
    */
   public boolean exportCsv(int magId, File selectedFile)
   {
-    DecimalFormat df0 = new DecimalFormat("0.00");
+    DecimalFormat df0 = PrintFormat.getDecimal("0.00");
+    DecimalFormat df = PrintFormat.getDecimal("#.##");
     ArrayList<Product> list = getProductList(magId, "");
     int pos = 0;
     String line, sep = "\t";
@@ -120,7 +122,7 @@ public class Magazyn
         p.name + sep +
         p.um + sep +
         p.vat + sep +
-        p.quantity + sep +
+        df.format(p.quantity) + sep +
         df0.format(p.price) + sep +
         df0.format(p.priceSell) + sep +
         p.date;

@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 import kbt.Config;
 import kbt.I18n;
 import kbt.KeyValue;
+import kbt.PrintFormat;
 
 /**
  *
@@ -33,6 +34,7 @@ public class MainFrame extends javax.swing.JFrame {
 
       DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
       rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
+      jTable1.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
       jTable1.getColumnModel().getColumn(5).setCellRenderer(rightRenderer);
       jTable1.getColumnModel().getColumn(6).setCellRenderer(rightRenderer);
 
@@ -54,7 +56,8 @@ public class MainFrame extends javax.swing.JFrame {
 
     public void setProductTable()
     {
-      DecimalFormat df0 = new DecimalFormat("0.00");
+      DecimalFormat df0 = PrintFormat.getDecimal("0.00");
+      DecimalFormat df = PrintFormat.getDecimal("#.##");
       int pos = 0;
       ArrayList<Product> list = mag.getProductList(
               ((KeyValue)magCombo.getSelectedItem()).key,
@@ -73,7 +76,7 @@ public class MainFrame extends javax.swing.JFrame {
           p.name,
           p.um,
           p.vat,
-          p.quantity,
+          df.format(p.quantity),
           df0.format(p.price),
           df0.format(p.priceSell),
           p.date
@@ -100,8 +103,7 @@ public class MainFrame extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-  private void initComponents()
-  {
+  private void initComponents() {
 
     jSplitPane1 = new javax.swing.JSplitPane();
     jPanel1 = new javax.swing.JPanel();
@@ -125,27 +127,21 @@ public class MainFrame extends javax.swing.JFrame {
     jSplitPane1.setDividerSize(0);
     jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
-    magCombo.addActionListener(new java.awt.event.ActionListener()
-    {
-      public void actionPerformed(java.awt.event.ActionEvent evt)
-      {
+    magCombo.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
         magListChange(evt);
       }
     });
 
-    filter.addKeyListener(new java.awt.event.KeyAdapter()
-    {
-      public void keyReleased(java.awt.event.KeyEvent evt)
-      {
+    filter.addKeyListener(new java.awt.event.KeyAdapter() {
+      public void keyReleased(java.awt.event.KeyEvent evt) {
         filterChanged(evt);
       }
     });
 
     jButton1.setText(bundle.getString("MainFrame.jButton1.text")); // NOI18N
-    jButton1.addActionListener(new java.awt.event.ActionListener()
-    {
-      public void actionPerformed(java.awt.event.ActionEvent evt)
-      {
+    jButton1.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
         szukajAction(evt);
       }
     });
@@ -172,41 +168,32 @@ public class MainFrame extends javax.swing.JFrame {
     jSplitPane1.setTopComponent(jPanel1);
 
     jTable1.setModel(new javax.swing.table.DefaultTableModel(
-      new Object [][]
-      {
+      new Object [][] {
         {null, null, null, null, null, null, null, null}
       },
-      new String []
-      {
+      new String [] {
         "Lp", "Nazwa", "Jm", "Vat", "Ilość", "Cena netto", "Cena sprzedaży", "Data"
       }
-    )
-    {
-      Class[] types = new Class []
-      {
-        java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+    ) {
+      Class[] types = new Class [] {
+        java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
       };
-      boolean[] canEdit = new boolean []
-      {
+      boolean[] canEdit = new boolean [] {
         false, false, false, false, false, false, false, false
       };
 
-      public Class getColumnClass(int columnIndex)
-      {
+      public Class getColumnClass(int columnIndex) {
         return types [columnIndex];
       }
 
-      public boolean isCellEditable(int rowIndex, int columnIndex)
-      {
+      public boolean isCellEditable(int rowIndex, int columnIndex) {
         return canEdit [columnIndex];
       }
     });
     jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
     jTable1.getTableHeader().setReorderingAllowed(false);
-    jTable1.addMouseListener(new java.awt.event.MouseAdapter()
-    {
-      public void mouseClicked(java.awt.event.MouseEvent evt)
-      {
+    jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
         listaClicked(evt);
       }
     });
@@ -239,10 +226,8 @@ public class MainFrame extends javax.swing.JFrame {
     jMenu1.setText(bundle.getString("MainFrame.jMenu1.text")); // NOI18N
 
     jMenuItem2.setText(bundle.getString("MainFrame.jMenuItem2.text")); // NOI18N
-    jMenuItem2.addActionListener(new java.awt.event.ActionListener()
-    {
-      public void actionPerformed(java.awt.event.ActionEvent evt)
-      {
+    jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
         menuNowyProdukt(evt);
       }
     });
@@ -250,30 +235,24 @@ public class MainFrame extends javax.swing.JFrame {
     jMenu1.add(jSeparator1);
 
     jMenuItem4.setText(bundle.getString("MainFrame.jMenuItem4.text")); // NOI18N
-    jMenuItem4.addActionListener(new java.awt.event.ActionListener()
-    {
-      public void actionPerformed(java.awt.event.ActionEvent evt)
-      {
+    jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
         jMenuItem4ActionExport(evt);
       }
     });
     jMenu1.add(jMenuItem4);
 
     jMenuItem3.setText(bundle.getString("MainFrame.jMenuItem3.text")); // NOI18N
-    jMenuItem3.addActionListener(new java.awt.event.ActionListener()
-    {
-      public void actionPerformed(java.awt.event.ActionEvent evt)
-      {
+    jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
         actionAktualizacja(evt);
       }
     });
     jMenu1.add(jMenuItem3);
 
     jMenuItem1.setText(bundle.getString("MainFrame.jMenuItem1.text")); // NOI18N
-    jMenuItem1.addActionListener(new java.awt.event.ActionListener()
-    {
-      public void actionPerformed(java.awt.event.ActionEvent evt)
-      {
+    jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
         jMenuItem1ActionPerformed(evt);
       }
     });
@@ -291,7 +270,7 @@ public class MainFrame extends javax.swing.JFrame {
     );
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
+      .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 696, Short.MAX_VALUE)
     );
 
     pack();

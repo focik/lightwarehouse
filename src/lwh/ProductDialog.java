@@ -16,6 +16,7 @@ import java.util.Map;
 import javax.swing.*;
 import kbt.I18n;
 import kbt.KeyValue;
+import kbt.PrintFormat;
 
 /**
  *
@@ -50,8 +51,8 @@ public class ProductDialog extends javax.swing.JDialog
   private void setValues(int prodId)
   {
     HashMap<Integer, KeyValue> magList;
-    DecimalFormat df0 = new DecimalFormat("0.00");
-    DecimalFormat df = new DecimalFormat("#.##");
+    DecimalFormat df0 = PrintFormat.getDecimal("0.00");
+    DecimalFormat df = PrintFormat.getDecimal("#.##");
 
     mag = new Magazyn();
     magList = mag.getList();
