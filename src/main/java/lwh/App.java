@@ -27,7 +27,9 @@ public class App {
 
         upg.updateDb();
 
-        java.awt.EventQueue.invokeLater(() -> new MainFrame().setVisible(true));
+        MainFrame mainFrame = new MainFrame(new Magazyn());
+
+        java.awt.EventQueue.invokeLater(() -> mainFrame.setVisible(true));
     }
 
     private static String getWorkDir()

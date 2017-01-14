@@ -10,27 +10,25 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import kbt.Config;
+
 import kbt.I18n;
 import kbt.KeyValue;
 import kbt.PrintFormat;
 
-/**
- *
- * @author kabot
- */
 public class MainFrame extends javax.swing.JFrame {
 
-    private Magazyn mag;
+    private Magazyn magazyn;
     private DefaultTableModel model;
     private HashMap<Integer, Integer> listaPosId = new HashMap<>();
 
     /**
      * Creates new form MainFrame
      */
-    public MainFrame()
+    public MainFrame(Magazyn magazyn)
     {
       initComponents();
+
+      this.magazyn = magazyn;
 
       DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
       rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
@@ -40,16 +38,14 @@ public class MainFrame extends javax.swing.JFrame {
 
       filter.requestFocus();
 
-      mag = new Magazyn();
-
       model = (DefaultTableModel)jTable1.getModel();
 
-      setMagList(mag.getList());
+      setMagList();
     }
 
-    private void setMagList(Map<Integer, KeyValue> list)
+    private void setMagList()
     {
-        for (Map.Entry<Integer, KeyValue> m : list.entrySet()) {
+        for (Map.Entry<Integer, KeyValue> m : magazyn.getList().entrySet()) {
             magCombo.addItem(m.getValue());
         }
     }
@@ -59,7 +55,7 @@ public class MainFrame extends javax.swing.JFrame {
       DecimalFormat df0 = PrintFormat.getDecimal("0.00");
       DecimalFormat df = PrintFormat.getDecimal("#.##");
       int pos = 0;
-      ArrayList<Product> list = mag.getProductList(
+      ArrayList<Product> list = magazyn.getProductList(
               ((KeyValue)magCombo.getSelectedItem()).key,
               filter.getText());
 
@@ -339,7 +335,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     fc.setSelectedFile(new File(m.value + ".csv"));
     if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-      mag.exportCsv(m.key, fc.getSelectedFile());
+      magazyn.exportCsv(m.key, fc.getSelectedFile());
     }
   }//GEN-LAST:event_jMenuItem4ActionExport
 
