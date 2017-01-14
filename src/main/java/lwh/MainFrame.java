@@ -1,19 +1,17 @@
 package lwh;
 
+import kbt.I18n;
+import kbt.KeyValue;
+import kbt.PrintFormat;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-
-import kbt.I18n;
-import kbt.KeyValue;
-import kbt.PrintFormat;
 
 public class MainFrame extends javax.swing.JFrame {
 
@@ -103,7 +101,6 @@ public class MainFrame extends javax.swing.JFrame {
     jMenuItem2 = new javax.swing.JMenuItem();
     jSeparator1 = new javax.swing.JPopupMenu.Separator();
     jMenuItem4 = new javax.swing.JMenuItem();
-    jMenuItem3 = new javax.swing.JMenuItem();
     jMenuItem1 = new javax.swing.JMenuItem();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -228,14 +225,6 @@ public class MainFrame extends javax.swing.JFrame {
     });
     jMenu1.add(jMenuItem4);
 
-    jMenuItem3.setText(bundle.getString("MainFrame.jMenuItem3.text")); // NOI18N
-    jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        actionAktualizacja(evt);
-      }
-    });
-    jMenu1.add(jMenuItem3);
-
     jMenuItem1.setText(bundle.getString("MainFrame.jMenuItem1.text")); // NOI18N
     jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -299,11 +288,6 @@ public class MainFrame extends javax.swing.JFrame {
     filter.selectAll();
   }//GEN-LAST:event_menuNowyProdukt
 
-  private void actionAktualizacja(java.awt.event.ActionEvent evt)//GEN-FIRST:event_actionAktualizacja
-  {//GEN-HEADEREND:event_actionAktualizacja
-    new UpgradeDialog(this, true).setVisible(true);
-  }//GEN-LAST:event_actionAktualizacja
-
   /**
    * export
    * @param evt
@@ -346,7 +330,6 @@ public class MainFrame extends javax.swing.JFrame {
   private javax.swing.JMenuBar jMenuBar1;
   private javax.swing.JMenuItem jMenuItem1;
   private javax.swing.JMenuItem jMenuItem2;
-  private javax.swing.JMenuItem jMenuItem3;
   private javax.swing.JMenuItem jMenuItem4;
   private javax.swing.JPanel jPanel1;
   private javax.swing.JScrollPane jScrollPane1;

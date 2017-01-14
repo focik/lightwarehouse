@@ -6,17 +6,6 @@ import java.util.Properties;
 public class Config
 {
   private static Properties props;
-  private static String workDir;
-
-  public static String getWorkDir()
-  {
-    return workDir;
-  }
-
-  public static void setWorkDir(String workDir)
-  {
-    Config.workDir = workDir;
-  }
 
   public static void setProperties(String propertiesFile)
   {
@@ -46,6 +35,7 @@ public class Config
   public static String get(String key)
   {
     if (props == null) {
+        return null;
     }
 
     return props.getProperty(key);
