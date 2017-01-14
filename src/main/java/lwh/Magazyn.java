@@ -1,5 +1,9 @@
 package lwh;
 
+import kbt.I18n;
+import kbt.KeyValue;
+import kbt.PrintFormat;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,13 +14,7 @@ import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import kbt.I18n;
-import kbt.KeyValue;
-import kbt.PrintFormat;
 
-/**
- * @author cwpika
- */
 public class Magazyn
 {
     public HashMap<Integer, KeyValue> getList()

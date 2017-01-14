@@ -11,8 +11,20 @@ dependencies {
 
 mainClassName = 'lwh.App'
 
+// git based version
+def date = 'git log -1 --format=%cd --date=format:%Y%m%d'.execute().text.trim()
+def hash = 'git rev-parse --short HEAD'.execute().text.trim()
+version = "b${date}.${hash}"
+
+processResources {
+    filesMatching('version.properties') {
+        expand(["version": version])
+    }
+}
+
 jar {
     manifest.attributes("Main-Class": mainClassName)
+    archiveName = 'lightwarehouse.jar'
 
     from {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }

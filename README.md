@@ -1,9 +1,9 @@
 ## Build & run
 <code>gradle jar</gradle>
 
-<code>java -jar build/libs/lightwarehousej.jar</code>
+<code>java -jar build/libs/lightwarehouse.jar [-v]</code>
 
-<code>java -DpropertiesFile=src/main/resources/application.properties -jar build/libs/lightwarehousej.jar</code>
+<code>java -DpropertiesFile=src/main/resources/application.properties -jar build/libs/lightwarehouse.jar</code>
 
 ## Tools
 in.csv - file exported by the application
