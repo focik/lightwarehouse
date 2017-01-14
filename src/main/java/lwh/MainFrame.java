@@ -86,16 +86,6 @@ public class MainFrame extends javax.swing.JFrame {
       }
     }
 
-    private static String getWorkDir()
-    {
-      String jarPath = MainFrame.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-      String dir;
-
-      dir = new File(jarPath).getParent();
-
-      return dir;
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -352,39 +342,6 @@ public class MainFrame extends javax.swing.JFrame {
       mag.exportCsv(m.key, fc.getSelectedFile());
     }
   }//GEN-LAST:event_jMenuItem4ActionExport
-
-  /**
-   * @param args the command line arguments
-   */
-  public static void main(String[] args)
-  {
-    String workdir;
-    Upgrade upg = new Upgrade();
-
-    if (args.length > 0) {
-      //tryb debug - jawnie podany katalog aplikacji
-      workdir = args[0];
-    }
-    else {
-      workdir = getWorkDir();
-    }
-
-    Config.setProperties(System.getProperty("propertiesFile"));
-    Config.setWorkDir(workdir);
-
-    I18n.setLocale(Config.get("lang"));
-
-    upg.updateDb();
-
-    // program moze byc wywolywany przez magazynstart
-    java.awt.EventQueue.invokeLater(new Runnable() {
-
-      @Override
-      public void run() {
-        new MainFrame().setVisible(true);
-      }
-    });
-  }
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JTextField filter;
