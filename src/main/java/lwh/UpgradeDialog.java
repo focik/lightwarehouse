@@ -65,7 +65,7 @@ public class UpgradeDialog extends javax.swing.JDialog
     restartButton = new javax.swing.JButton();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-    java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("lwh/resources/messages"); // NOI18N
+    java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("messages"); // NOI18N
     setTitle(bundle.getString("UpgradeDialog.title")); // NOI18N
 
     jLabel1.setText(bundle.getString("UpgradeDialog.jLabel1.text")); // NOI18N

@@ -368,6 +368,8 @@ public class MainFrame extends javax.swing.JFrame {
     else {
       workdir = getWorkDir();
     }
+
+    Config.setProperties(System.getProperty("propertiesFile"));
     Config.setWorkDir(workdir);
 
     I18n.setLocale(Config.get("lang"));

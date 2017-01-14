@@ -240,7 +240,7 @@ public class ProductDialog extends javax.swing.JDialog
     prodCenaSprz = new javax.swing.JTextField();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-    java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("lwh/resources/messages"); // NOI18N
+    java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("messages"); // NOI18N
     setTitle(bundle.getString("ProductDialog.title")); // NOI18N
 
     jLabel1.setText(bundle.getString("ProductDialog.jLabel1.text")); // NOI18N

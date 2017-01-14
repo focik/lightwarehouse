@@ -18,7 +18,7 @@ public class I18n {
   public static String tr(String key)
   {
     if (res == null) {
-      res = ResourceBundle.getBundle("lwh.resources.messages", locale);
+      res = ResourceBundle.getBundle("messages", locale);
     }
 
     return res.getString(key);
